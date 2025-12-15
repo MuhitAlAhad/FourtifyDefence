@@ -1,19 +1,33 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Shield, ArrowLeft } from 'lucide-react';
 import { Button } from './Button';
 import { Input } from './Input';
 import logoImage from 'figma:asset/35f931b802bf39733103d00f96fb6f9c21293f6e.png';
+import { signin } from '../services/auth';
 
 export function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Mock login - navigate to dashboard
-    navigate('/dashboard');
+    if (isSubmitting) return;
+    setError(null);
+    setIsSubmitting(true);
+
+    try {
+      await signin({ email, password });
+      navigate('/dashboard');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Sign in failed. Please try again.';
+      setError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   return (
@@ -68,9 +82,13 @@ export function LoginPage() {
               </a>
             </div>
             
-            <Button type="submit" variant="primary" size="lg" className="w-full">
-              Sign In
+            <Button type="submit" variant="primary" size="lg" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? 'Signing in...' : 'Sign In'}
             </Button>
+
+            {error && (
+              <div className="text-[#ef4444] text-sm text-center">{error}</div>
+            )}
           </form>
           
           {/* Divider */}

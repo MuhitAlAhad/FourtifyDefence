@@ -11,11 +11,11 @@ export function Footer() {
           <div>
             <img src={logoImage} alt="Fourtify" className="h-10 mb-4" />
             <p className="text-[#64748b] mb-4">
-              The DISP compliance CRM for defence-ready companies.
+              Automated DISP Compliance for the Defence Industrial base.
             </p>
             <div className="flex items-center gap-2 text-[#64748b]">
               <Mail className="w-4 h-4" />
-              <span>contact@fourtify.defence</span>
+              <span>dani@fourd.com.au</span>
             </div>
           </div>
 
@@ -60,15 +60,15 @@ export function Footer() {
               © 2025 Fourtify Defence. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <div className="flex items-center gap-2 text-[#64748b]">
-                <Lock className="w-4 h-4 text-[#3dd68c]" />
-                <span>ISO 27001 Certified</span>
-              </div>
-              <div className="flex items-center gap-2 text-[#64748b]">
-                <FileCheck className="w-4 h-4 text-[#3dd68c]" />
-                <span>DISP Compliant</span>
-              </div>
+            <div className="flex items-center gap-2 text-[#64748b]">
+              <Lock className="w-4 h-4 text-[#3dd68c]" />
+              <span>ISO 27001 Ready</span>
             </div>
+            <div className="flex items-center gap-2 text-[#64748b]">
+              <FileCheck className="w-4 h-4 text-[#3dd68c]" />
+              <span>DISP Compliant</span>
+            </div>
+          </div>
           </div>
         </div>
       </div>

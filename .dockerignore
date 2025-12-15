@@ -1,0 +1,14 @@
+node_modules
+build
+dist
+.git
+.gitignore
+**/bin
+**/obj
+**/.DS_Store
+**/Thumbs.db
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+backend/DefenceCrm.Api/data

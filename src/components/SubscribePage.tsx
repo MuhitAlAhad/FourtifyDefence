@@ -8,7 +8,7 @@ import bgImage from 'figma:asset/2135485e1d21f7ff57b035a705371c25d20cb5d2.png';
 
 export function SubscribePage() {
   const navigate = useNavigate();
-  const [billingCycle, setBillingCycle] = useState<'annual' | 'monthly'>('annual');
+  const [billingCycle, setBillingCycle] = useState<'annual' | 'monthly'>('monthly');
 
   const handleContinueToPayment = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,8 +56,8 @@ export function SubscribePage() {
                   <h4 className="text-[#e2e8f0] mb-4">Fourtify Professional</h4>
                   
                   <div className="flex items-baseline gap-2 mb-6">
-                    <span className="text-4xl text-[#3dd68c]">$25,000</span>
-                    <span className="text-[#94a3b8]">/year</span>
+                    <span className="text-4xl text-[#3dd68c]">$2,099</span>
+                    <span className="text-[#94a3b8]">/month invoiced monthly</span>
                   </div>
                   
                   <div className="space-y-3 mb-6">
@@ -69,7 +69,8 @@ export function SubscribePage() {
                       'Advanced reporting',
                       'Custom workflows',
                       'API access',
-                      'Dedicated account manager'
+                      'Dedicated account manager',
+                      'Annual Security Reporting'
                     ].map((feature, i) => (
                       <div key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-[#3dd68c] flex-shrink-0 mt-0.5" />
@@ -310,8 +311,8 @@ export function SubscribePage() {
                                 <CheckCircle2 className="w-5 h-5 text-[#3dd68c]" />
                               )}
                             </div>
-                            <div className="text-[#3dd68c] mb-1">$25,000</div>
-                            <div className="text-sm text-[#94a3b8]">Save 15% vs monthly</div>
+                            <div className="text-[#3dd68c] mb-1">$20,999</div>
+                            <div className="text-sm text-[#94a3b8]">Invoiced annually (save vs monthly)</div>
                           </button>
                           
                           <button
@@ -329,8 +330,8 @@ export function SubscribePage() {
                                 <CheckCircle2 className="w-5 h-5 text-[#3dd68c]" />
                               )}
                             </div>
-                            <div className="text-[#3dd68c] mb-1">$2,450</div>
-                            <div className="text-sm text-[#94a3b8]">Billed monthly</div>
+                            <div className="text-[#3dd68c] mb-1">$2,099</div>
+                            <div className="text-sm text-[#94a3b8]">Invoiced monthly</div>
                           </button>
                         </div>
                       </div>

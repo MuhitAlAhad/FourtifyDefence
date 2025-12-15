@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Shield, ArrowLeft, ArrowRight, Building2, User, CreditCard, FileCheck, Search, CheckCircle2 } from 'lucide-react';
 import { Button } from './Button';
 import { Input } from './Input';
 import logoImage from 'figma:asset/35f931b802bf39733103d00f96fb6f9c21293f6e.png';
+import { lookupAbn, signup } from '../services/auth';
 
 export function RegisterPage() {
   const navigate = useNavigate();
@@ -11,8 +12,11 @@ export function RegisterPage() {
   const [showThankYou, setShowThankYou] = useState(false);
   const [abn, setAbn] = useState('');
   const [isLoadingABN, setIsLoadingABN] = useState(false);
+  const [abnError, setAbnError] = useState<string | null>(null);
   const [csoNotSure, setCsoNotSure] = useState(false);
   const [soNotSure, setSoNotSure] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     // Step 1: Company Info & ABN
     companyName: '',
@@ -41,12 +45,23 @@ export function RegisterPage() {
   
   // Mock ABN lookup - in production, this would call the actual ABN Lookup API
   const handleABNLookup = async () => {
-    if (abn.length === 11) {
-      setIsLoadingABN(true);
-      setTimeout(() => {
-        updateFormData('companyName', 'Example Defence Solutions Pty Ltd');
-        setIsLoadingABN(false);
-      }, 500);
+    const cleanedAbn = abn.replace(/\D/g, '');
+    if (cleanedAbn.length !== 11) {
+      setAbnError('ABN must be 11 digits.');
+      return;
+    }
+
+    setIsLoadingABN(true);
+    setAbnError(null);
+    try {
+      const result = await lookupAbn(cleanedAbn);
+      updateFormData('abn', result.abn);
+      updateFormData('companyName', result.entityName);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'ABN lookup failed. Please try again.';
+      setAbnError(message);
+    } finally {
+      setIsLoadingABN(false);
     }
   };
   
@@ -58,10 +73,44 @@ export function RegisterPage() {
     if (step > 1) setStep(step - 1);
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const validatePassword = (password: string) => {
+    const rules = [
+      { test: (p: string) => p.length >= 12, message: 'Password must be at least 12 characters.' },
+      { test: (p: string) => /[A-Z]/.test(p), message: 'Password must include an uppercase letter.' },
+      { test: (p: string) => /[a-z]/.test(p), message: 'Password must include a lowercase letter.' },
+      { test: (p: string) => /[0-9]/.test(p), message: 'Password must include a number.' },
+      { test: (p: string) => /[^a-zA-Z0-9]/.test(p), message: 'Password must include a special character.' },
+    ];
+    return rules.find((rule) => !rule.test(password))?.message;
+  };
+  
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Show thank you message
-    setShowThankYou(true);
+    
+    if (isSubmitting) return;
+    setApiError(null);
+
+    const passwordError = validatePassword(formData.password);
+    if (passwordError) {
+      setApiError(passwordError);
+      return;
+    }
+    setIsSubmitting(true);
+
+    try {
+      const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+      await signup({
+        email: formData.email,
+        password: formData.password,
+        fullName: fullName || undefined
+      });
+      setShowThankYou(true);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Signup failed. Please try again.';
+      setApiError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleContinueToDashboard = () => {
@@ -180,6 +229,8 @@ export function RegisterPage() {
                       onChange={(e) => {
                         const value = e.target.value.replace(/\D/g, '').slice(0, 11);
                         setAbn(value);
+                        setAbnError(null);
+                        updateFormData('abn', value);
                       }}
                       className="flex-1 bg-[#1a1d23] border border-[#3a3f48] px-4 py-3 text-[#e2e8f0] focus:outline-none focus:border-[#3dd68c] transition-colors clip-corner-sm"
                       placeholder="Enter 11-digit ABN"
@@ -196,6 +247,9 @@ export function RegisterPage() {
                     </button>
                   </div>
                   <p className="text-sm text-[#94a3b8] mt-1">Format: 12345678901 (11 digits)</p>
+                  {abnError && (
+                    <p className="text-sm text-[#ef4444] mt-2">{abnError}</p>
+                  )}
                 </div>
                 
                 <Input 
@@ -418,15 +472,15 @@ export function RegisterPage() {
                     {
                       id: 'professional',
                       name: 'Fourtify Professional',
-                      price: '$25,000/year',
-                      features: ['Up to 100 personnel', 'All DISP modules', '100GB storage', 'Priority support', 'Dedicated account manager'],
+                      price: '$2,099/month (invoiced monthly)',
+                      features: ['Up to 100 personnel', 'All DISP modules', '100GB storage', 'Priority support', 'Dedicated account manager', 'Annual Security Reporting'],
                       recommended: true
                     },
                     {
                       id: 'enterprise',
                       name: 'SME Custom',
                       price: 'Custom pricing',
-                      features: ['Unlimited personnel', 'All features + custom modules', 'Unlimited storage', '24/7 support', 'Custom workflows']
+                      features: ['Annual Security Reporting', 'Unlimited personnel', 'All features + custom modules', 'Unlimited storage', '24/7 support', 'Custom workflows']
                     }
                   ].map((plan) => (
                     <div 
@@ -554,10 +608,15 @@ export function RegisterPage() {
                   <Button type="button" variant="secondary" size="lg" onClick={handleBack} className="flex-1">
                     <ArrowLeft className="w-5 h-5 mr-2" /> Back
                   </Button>
-                  <Button type="submit" variant="primary" size="lg" className="flex-1">
-                    Create Account
+                  <Button type="submit" variant="primary" size="lg" className="flex-1" disabled={isSubmitting}>
+                    {isSubmitting ? 'Creating...' : 'Create Account'}
                   </Button>
                 </div>
+                {apiError && (
+                  <div className="text-[#ef4444] text-sm mt-3">
+                    {apiError}
+                  </div>
+                )}
               </div>
             )}
           </form>

@@ -35,7 +35,7 @@ export function HomePage() {
               <div>
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#0f1824]/80 backdrop-blur-sm border border-[#3dd68c]/40 clip-corner-sm mb-6">
                   <Shield className="w-4 h-4 text-[#3dd68c]" />
-                  <span className="text-[#3dd68c]">DISP Compliant CRM</span>
+                  <span className="text-[#3dd68c]">DISP Compliance Fast</span>
                 </div>
                 
                 <h1 className="text-[#e2e8f0] mb-6 text-3xl lg:text-4xl leading-tight">
@@ -51,7 +51,7 @@ export function HomePage() {
                 </p>
                 
                 <p className="text-[#94a3b8] mb-8">
-                  Fourtify provides clarity, assurance, and control for DISP membership and Defence contract compliance. <span className="text-[#3dd68c]">Total compliance.</span>
+                  Fourtify provides clarity, assurance, and control for DISP membership and Defence contract compliance. <span className="text-[#94a3b8] font-extrabold">TOTAL COMPLIANCE.</span>
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -228,8 +228,8 @@ export function HomePage() {
               {[
                 {
                   name: 'Fourtify Professional',
-                  price: '$25,000',
-                  period: '/year',
+                  price: '$2,099',
+                  period: '/month invoiced monthly',
                   description: 'Complete DISP compliance solution for growing organizations',
                   features: [
                     'Up to 100 personnel',
@@ -239,7 +239,8 @@ export function HomePage() {
                     'Advanced reporting & analytics',
                     'Custom workflows',
                     'API access',
-                    'Dedicated account manager'
+                    'Dedicated account manager',
+                    'Annual Security Reporting'
                   ],
                   highlighted: true
                 },
@@ -250,6 +251,7 @@ export function HomePage() {
                   description: 'Tailored solutions for small and medium enterprises',
                   features: [
                     'Customized user capacity',
+                    'Annual Security Reporting',
                     'Flexible DISP modules',
                     'Scalable document storage',
                     'Email & phone support',
@@ -336,8 +338,8 @@ export function HomePage() {
                 },
                 {
                   icon: Shield,
-                  title: 'ISO 27001 Certified',
-                  description: 'International standard for information security management'
+                  title: 'ISO 27001 Ready',
+                  description: 'Roadmap aligned with the international security standard'
                 },
                 {
                   icon: FileCheck,
