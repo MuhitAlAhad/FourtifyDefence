@@ -66,7 +66,48 @@ export function RegisterPage() {
     }
   };
   
+  const validateCurrentStep = () => {
+    switch (step) {
+      case 1:
+        if (!formData.abn || formData.abn.length !== 11) return 'Please enter a valid 11-digit ABN.';
+        if (!formData.companyName) return 'Company Name is required.';
+        if (!formData.companySize) return 'Company Size is required.';
+        if (!formData.industry) return 'Industry sector is required.';
+        return null;
+      case 2:
+        if (!formData.contactName) return 'Point of Contact Name is required.';
+        if (!formData.contactEmail) return 'Contact Email is required.';
+        if (!formData.contactPhone) return 'Contact Phone is required.';
+        return null;
+      case 3:
+        if (!formData.defenceIndustry) return 'Defence Industry involvement is required.';
+        if (!formData.dispMember) return 'Please select whether you are a DISP member.';
+        if (!formData.governmentPanels) return 'Please specify government panels or enter "None".';
+        if (!csoNotSure && !formData.nominatedCSO) return 'Please provide a CSO or check Not sure.';
+        if (!soNotSure && !formData.nominatedSO) return 'Please provide a SO or check Not sure.';
+        return null;
+      case 4:
+        if (!formData.plan) return 'Please choose a plan.';
+        return null;
+      case 5:
+        if (!formData.firstName) return 'First Name is required.';
+        if (!formData.lastName) return 'Last Name is required.';
+        if (!formData.email) return 'Work Email is required.';
+        if (!formData.password) return 'Password is required.';
+        if (!formData.phone) return 'Phone Number is required.';
+        return null;
+      default:
+        return null;
+    }
+  };
+
   const handleNext = () => {
+    const validationMessage = validateCurrentStep();
+    if (validationMessage) {
+      setApiError(validationMessage);
+      return;
+    }
+    setApiError(null);
     if (step < 5) setStep(step + 1);
   };
   
@@ -90,6 +131,11 @@ export function RegisterPage() {
     
     if (isSubmitting) return;
     setApiError(null);
+    const validationMessage = validateCurrentStep();
+    if (validationMessage) {
+      setApiError(validationMessage);
+      return;
+    }
 
     const passwordError = validatePassword(formData.password);
     if (passwordError) {
