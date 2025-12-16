@@ -16,6 +16,9 @@
     - Local run: `ConnectionStrings__DefaultConnection="your-connection-string" dotnet watch run` from `backend/DefenceCrm.Api` (Swagger at `/swagger` in Development).
     - Render: add the same env var in the Render service dashboard so the API uses Supabase instead of SQLite.
   - The app will create the schema on first run. To apply migrations manually instead, install `dotnet-ef` and run `dotnet ef database update` with the connection string set.
+  - Email confirmation (Identity) requires SMTP settings in env (Render/local):  
+    - `Email__Host`, `Email__Port`, `Email__EnableSsl`, `Email__Username`, `Email__Password`, `Email__From`  
+    - Optional: `Email__ConfirmationLinkBaseUrl` (e.g., `https://your-api.onrender.com` or frontend domain). The confirmation link defaults to the API host if not set.
   
   ## Frontend ↔ API (Vercel → Render)
   - Copy `.env.example` to `.env` and set `VITE_API_BASE_URL` to your Render API base (e.g., `https://your-api.onrender.com/api`).

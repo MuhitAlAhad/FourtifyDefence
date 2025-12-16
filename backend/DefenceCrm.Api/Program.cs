@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.DataProtection;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using DefenceCrm.Api.Services;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +42,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 12;
+    options.SignIn.RequireConfirmedEmail = true;
   })
   .AddEntityFrameworkStores<ApplicationDbContext>()
   .AddSignInManager()
@@ -74,6 +77,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<SignupRequestValidator>();
+builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("Email"));
+builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
 
 var app = builder.Build();
 
