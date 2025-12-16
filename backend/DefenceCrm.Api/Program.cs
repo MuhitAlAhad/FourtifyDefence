@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.DataProtection;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,14 +18,16 @@ Directory.CreateDirectory(dataDir);
 var dataProtectionDir = Path.Combine(dataDir, "keys");
 Directory.CreateDirectory(dataProtectionDir);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+  ?? builder.Configuration["SUPABASE_DB_CONNECTION_STRING"];
+
 if (string.IsNullOrWhiteSpace(connectionString))
 {
-  connectionString = $"Data Source={Path.Combine(dataDir, "defence-crm.db")}";
+  throw new InvalidOperationException("Database connection string missing. Set ConnectionStrings__DefaultConnection or SUPABASE_DB_CONNECTION_STRING.");
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-  options.UseSqlite(connectionString));
+  options.UseNpgsql(connectionString));
 
 builder.Services.AddDataProtection()
   .PersistKeysToFileSystem(new DirectoryInfo(dataProtectionDir));

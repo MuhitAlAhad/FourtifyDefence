@@ -9,12 +9,15 @@
 
   Run `npm run dev` to start the development server.
   
-  ## Backend (ASP.NET Core)
+  ## Backend (ASP.NET Core + Supabase Postgres)
   - Install .NET 8 SDK.
-  - From `backend/DefenceCrm.Api`, run `dotnet watch run` (Swagger at `/swagger` in Development).
-  - Local DB: SQLite file under `backend/DefenceCrm.Api/data/`.
+  - Provision a Supabase Postgres instance and grab the full connection string (e.g., `Host=...supabase.co;Port=5432;Database=postgres;Username=postgres;Password=...;SslMode=Require;Trust Server Certificate=true`).
+  - Set the connection string via `ConnectionStrings__DefaultConnection` **or** `SUPABASE_DB_CONNECTION_STRING`.  
+    - Local run: `ConnectionStrings__DefaultConnection="your-connection-string" dotnet watch run` from `backend/DefenceCrm.Api` (Swagger at `/swagger` in Development).
+    - Render: add the same env var in the Render service dashboard so the API uses Supabase instead of SQLite.
+  - The app will create the schema on first run. To apply migrations manually instead, install `dotnet-ef` and run `dotnet ef database update` with the connection string set.
   
-  ## Frontend ↔ API
-  - Copy `.env.example` to `.env` and set `VITE_API_BASE_URL` (e.g., `http://localhost:5000/api`).
-  - Signup and ABN lookup use that base URL.
+  ## Frontend ↔ API (Vercel → Render)
+  - Copy `.env.example` to `.env` and set `VITE_API_BASE_URL` to your Render API base (e.g., `https://your-api.onrender.com/api`).
+  - Set the same `VITE_API_BASE_URL` environment variable in Vercel so client-side calls hit the Render backend (signup and ABN lookup use this).
   

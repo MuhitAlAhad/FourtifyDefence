@@ -2,6 +2,7 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 namespace DefenceCrm.Api.Data;
 
@@ -16,16 +17,16 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
       .AddEnvironmentVariables()
       .Build();
 
-    var connectionString = configuration.GetConnectionString("DefaultConnection");
+    var connectionString = configuration.GetConnectionString("DefaultConnection")
+      ?? configuration["SUPABASE_DB_CONNECTION_STRING"];
+
     if (string.IsNullOrWhiteSpace(connectionString))
     {
-      var dataDir = Path.Combine(Directory.GetCurrentDirectory(), "data");
-      Directory.CreateDirectory(dataDir);
-      connectionString = $"Data Source={Path.Combine(dataDir, "defence-crm.db")}";
+      throw new InvalidOperationException("Database connection string missing. Set ConnectionStrings__DefaultConnection or SUPABASE_DB_CONNECTION_STRING.");
     }
 
     var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-    optionsBuilder.UseSqlite(connectionString);
+    optionsBuilder.UseNpgsql(connectionString);
 
     return new ApplicationDbContext(optionsBuilder.Options);
   }
