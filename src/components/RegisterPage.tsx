@@ -5,6 +5,7 @@ import { Button } from './Button';
 import { Input } from './Input';
 import logoImage from 'figma:asset/35f931b802bf39733103d00f96fb6f9c21293f6e.png';
 import { lookupAbn, signup } from '../services/auth';
+import { submitQuestionnaire } from '../services/questionnaire';
 
 export function RegisterPage() {
   const navigate = useNavigate();
@@ -98,6 +99,28 @@ export function RegisterPage() {
     setIsSubmitting(true);
 
     try {
+      await submitQuestionnaire({
+        companyName: formData.companyName,
+        abn: formData.abn,
+        companySize: formData.companySize,
+        industry: formData.industry,
+        contactName: formData.contactName,
+        contactEmail: formData.contactEmail,
+        contactPhone: formData.contactPhone,
+        defenceIndustry: formData.defenceIndustry,
+        dispMember: formData.dispMember,
+        governmentPanels: formData.governmentPanels,
+        nominatedCso: formData.nominatedCSO,
+        nominatedSo: formData.nominatedSO,
+        csoNotSure,
+        soNotSure,
+        plan: formData.plan,
+        adminFirstName: formData.firstName,
+        adminLastName: formData.lastName,
+        adminEmail: formData.email,
+        adminPhone: formData.phone
+      });
+
       const fullName = `${formData.firstName} ${formData.lastName}`.trim();
       await signup({
         email: formData.email,

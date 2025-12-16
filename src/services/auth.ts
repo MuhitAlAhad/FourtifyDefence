@@ -18,7 +18,7 @@ export interface AbnLookupResponse {
   status: string;
 }
 
-async function request<T>(path: string, options: RequestInit): Promise<T> {
+export async function request<T>(path: string, options: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     headers: {
       'Content-Type': 'application/json',
