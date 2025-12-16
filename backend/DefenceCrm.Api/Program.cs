@@ -77,8 +77,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<SignupRequestValidator>();
-builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("Email"));
-builder.Services.AddTransient<IEmailSender, SmtpEmailSender>();
+builder.Services.Configure<ResendOptions>(builder.Configuration.GetSection("Resend"));
+builder.Services.AddHttpClient<IEmailSender, ResendEmailSender>();
 
 var app = builder.Build();
 

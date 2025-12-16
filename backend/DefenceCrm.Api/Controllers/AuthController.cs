@@ -135,7 +135,7 @@ public class AuthController(
 
   private string BuildConfirmationLink(string userId, string token)
   {
-    var baseUrl = configuration["Email:ConfirmationLinkBaseUrl"];
+    var baseUrl = configuration["Resend:ConfirmationLinkBaseUrl"] ?? configuration["Email:ConfirmationLinkBaseUrl"];
     var safeBase = !string.IsNullOrWhiteSpace(baseUrl)
       ? baseUrl.TrimEnd('/')
       : $"{Request.Scheme}://{Request.Host}";
