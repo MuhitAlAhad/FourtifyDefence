@@ -18,6 +18,7 @@
   - The app will create the schema on first run. To apply migrations manually instead, install `dotnet-ef` and run `dotnet ef database update` with the connection string set.
   - Email confirmation uses Resend (recommended):  
     - `Resend__ApiKey`, `Resend__From` (e.g., `Your Name <noreply@yourdomain.com>`), optional `Resend__ConfirmationLinkBaseUrl` (e.g., `https://your-api.onrender.com`).  
+    - Optional path override for the link: `Resend__ConfirmationLinkPath` (e.g., `/confirm-email` if you proxy through the frontend).  
     - Optional redirect after confirming: `Resend__ConfirmationRedirectUrl` (e.g., `https://your-frontend.com/login`).
     - Optional admin notifications on new signup: `Notifications__NewSignupRecipients` (comma-separated list, e.g., `dani@fourd.com.au`).
     - Users can resend confirmation via `POST /api/auth/resend-confirmation` with `{ "email": "user@example.com" }`.

@@ -138,7 +138,13 @@ public class AuthController(
       ? baseUrl.TrimEnd('/')
       : $"{Request.Scheme}://{Request.Host}";
 
-    return $"{safeBase}/api/auth/confirm-email?userId={WebUtility.UrlEncode(userId)}&token={WebUtility.UrlEncode(token)}";
+    var path = configuration["Resend:ConfirmationLinkPath"] ?? "/api/auth/confirm-email";
+    if (!path.StartsWith("/", StringComparison.Ordinal))
+    {
+      path = "/" + path;
+    }
+
+    return $"{safeBase}{path}?userId={WebUtility.UrlEncode(userId)}&token={WebUtility.UrlEncode(token)}";
   }
 
   [AllowAnonymous]
