@@ -81,3 +81,10 @@ export async function signin(payload: { email: string; password: string }): Prom
     body: JSON.stringify(payload),
   });
 }
+
+export async function resendConfirmation(email: string): Promise<void> {
+  await request<void>('/auth/resend-confirmation', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}

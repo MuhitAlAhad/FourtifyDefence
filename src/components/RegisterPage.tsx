@@ -99,7 +99,7 @@ export function RegisterPage() {
     setIsSubmitting(true);
 
     try {
-      await submitQuestionnaire({
+      const questionnairePayload = {
         companyName: formData.companyName,
         abn: formData.abn,
         companySize: formData.companySize,
@@ -119,14 +119,17 @@ export function RegisterPage() {
         adminLastName: formData.lastName,
         adminEmail: formData.email,
         adminPhone: formData.phone
-      });
+      };
 
       const fullName = `${formData.firstName} ${formData.lastName}`.trim();
-      await signup({
-        email: formData.email,
-        password: formData.password,
-        fullName: fullName || undefined
-      });
+      await Promise.all([
+        submitQuestionnaire(questionnairePayload),
+        signup({
+          email: formData.email,
+          password: formData.password,
+          fullName: fullName || undefined
+        })
+      ]);
       setShowThankYou(true);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Signup failed. Please try again.';

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text;
+using DefenceCrm.Api.Contracts.Requests;
 
 namespace DefenceCrm.Api.Controllers;
 
@@ -48,21 +49,7 @@ public class AuthController(
 
     logger.LogInformation("User {UserId} created with email {Email}", user.Id, user.Email);
 
-    var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-    var confirmationLink = BuildConfirmationLink(user.Id, token);
-
-    try
-    {
-      await emailSender.SendEmailAsync(
-        user.Email!,
-        "Confirm your Fourtify Defence account",
-        $"<p>Please confirm your email to activate your account.</p><p><a href=\"{confirmationLink}\">Confirm Email</a></p><p>If you did not request this, you can ignore this email.</p>");
-    }
-    catch (Exception ex)
-    {
-      logger.LogError(ex, "Failed to send confirmation email to {Email}", user.Email);
-      return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Signup succeeded but failed to send confirmation email. Please try again later." });
-    }
+    _ = SendConfirmationEmailAsync(user);
 
     var response = new AuthResponse
     {
@@ -70,8 +57,6 @@ public class AuthController(
       Email = user.Email!,
       FullName = user.FullName
     };
-
-    _ = NotifyAdminsAsync(user);
 
     return CreatedAtAction(nameof(Signup), response);
   }
@@ -135,6 +120,7 @@ public class AuthController(
     logger.LogInformation("User {UserId} confirmed email", user.Id);
 
     _ = SendVerifiedEmailAsync(user);
+    _ = NotifyAdminsAsync(user);
 
     var redirectUrl = configuration["Resend:ConfirmationRedirectUrl"] ?? configuration["Email:ConfirmationRedirectUrl"];
     if (!string.IsNullOrWhiteSpace(redirectUrl) && Uri.IsWellFormedUriString(redirectUrl, UriKind.Absolute))
@@ -153,6 +139,26 @@ public class AuthController(
       : $"{Request.Scheme}://{Request.Host}";
 
     return $"{safeBase}/api/auth/confirm-email?userId={WebUtility.UrlEncode(userId)}&token={WebUtility.UrlEncode(token)}";
+  }
+
+  [AllowAnonymous]
+  [HttpPost("resend-confirmation")]
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  public async Task<IActionResult> ResendConfirmation([FromBody] ResendConfirmationRequest request)
+  {
+    var user = await userManager.FindByEmailAsync(request.Email);
+    if (user is null)
+    {
+      return Ok(new { message = "If an account exists, a confirmation email has been sent." });
+    }
+
+    if (user.EmailConfirmed)
+    {
+      return Ok(new { message = "Email already confirmed. You can sign in." });
+    }
+
+    _ = SendConfirmationEmailAsync(user);
+    return Ok(new { message = "Confirmation email sent. Please check your inbox." });
   }
 
   private async Task NotifyAdminsAsync(ApplicationUser user)
@@ -209,6 +215,24 @@ public class AuthController(
     catch (Exception ex)
     {
       logger.LogWarning(ex, "Failed to send post-verification email to {Email}", user.Email);
+    }
+  }
+
+  private async Task SendConfirmationEmailAsync(ApplicationUser user)
+  {
+    try
+    {
+      var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+      var confirmationLink = BuildConfirmationLink(user.Id, token);
+
+      await emailSender.SendEmailAsync(
+        user.Email!,
+        "Confirm your Fourtify Defence account",
+        $"<p>Please confirm your email to activate your account.</p><p><a href=\"{confirmationLink}\">Confirm Email</a></p><p>If you did not request this, you can ignore this email.</p>");
+    }
+    catch (Exception ex)
+    {
+      logger.LogWarning(ex, "Failed to send confirmation email to {Email}", user.Email);
     }
   }
 }

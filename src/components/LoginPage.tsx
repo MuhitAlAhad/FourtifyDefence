@@ -4,7 +4,7 @@ import { Shield, ArrowLeft } from 'lucide-react';
 import { Button } from './Button';
 import { Input } from './Input';
 import logoImage from 'figma:asset/35f931b802bf39733103d00f96fb6f9c21293f6e.png';
-import { signin } from '../services/auth';
+import { resendConfirmation, signin } from '../services/auth';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -12,11 +12,14 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [resendStatus, setResendStatus] = useState<string | null>(null);
+  const [isResending, setIsResending] = useState(false);
   
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSubmitting) return;
     setError(null);
+    setResendStatus(null);
     setIsSubmitting(true);
 
     try {
@@ -27,6 +30,22 @@ export function LoginPage() {
       setError(message);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (!email || isResending) return;
+    setResendStatus(null);
+    setError(null);
+    setIsResending(true);
+    try {
+      await resendConfirmation(email);
+      setResendStatus('Confirmation email sent. Please check your inbox.');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Could not resend confirmation email. Please try again.';
+      setResendStatus(message);
+    } finally {
+      setIsResending(false);
     }
   };
   
@@ -101,8 +120,26 @@ export function LoginPage() {
             </div>
           </div>
           
+          {/* Resend Confirmation */}
+          <div className="mt-6 text-center space-y-3">
+            <p className="text-[#94a3b8]">Didn&apos;t get the confirmation email?</p>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="w-full"
+              disabled={!email || isResending}
+              onClick={handleResend}
+            >
+              {isResending ? 'Resending...' : 'Resend confirmation email'}
+            </Button>
+            {resendStatus && (
+              <div className="text-sm text-[#94a3b8]">{resendStatus}</div>
+            )}
+          </div>
+
           {/* Register Link */}
-          <div className="text-center">
+          <div className="text-center mt-6">
             <p className="text-[#94a3b8]">
               Don't have an account?{' '}
               <Link to="/register" className="text-[#3dd68c] hover:text-[#2ab872] transition-colors">
