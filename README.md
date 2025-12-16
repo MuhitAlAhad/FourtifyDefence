@@ -18,6 +18,7 @@
   - The app will create the schema on first run. To apply migrations manually instead, install `dotnet-ef` and run `dotnet ef database update` with the connection string set.
   - Email confirmation uses Resend (recommended):  
     - `Resend__ApiKey`, `Resend__From` (e.g., `Your Name <noreply@yourdomain.com>`), optional `Resend__ConfirmationLinkBaseUrl` (e.g., `https://your-api.onrender.com`).  
+    - Optional redirect after confirming: `Resend__ConfirmationRedirectUrl` (e.g., `https://your-frontend.com/login`).
     - If you prefer SMTP instead, swap the email sender implementation and set the corresponding SMTP vars.
   
   ## Frontend ↔ API (Vercel → Render)

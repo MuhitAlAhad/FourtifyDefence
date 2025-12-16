@@ -130,6 +130,13 @@ public class AuthController(
     }
 
     logger.LogInformation("User {UserId} confirmed email", user.Id);
+
+    var redirectUrl = configuration["Resend:ConfirmationRedirectUrl"] ?? configuration["Email:ConfirmationRedirectUrl"];
+    if (!string.IsNullOrWhiteSpace(redirectUrl) && Uri.IsWellFormedUriString(redirectUrl, UriKind.Absolute))
+    {
+      return Redirect(redirectUrl);
+    }
+
     return Ok(new { message = "Email confirmed. You can now sign in." });
   }
 
