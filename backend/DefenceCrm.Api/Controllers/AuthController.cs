@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Text;
 
 namespace DefenceCrm.Api.Controllers;
 
@@ -70,6 +71,8 @@ public class AuthController(
       FullName = user.FullName
     };
 
+    _ = NotifyAdminsAsync(user);
+
     return CreatedAtAction(nameof(Signup), response);
   }
 
@@ -131,6 +134,8 @@ public class AuthController(
 
     logger.LogInformation("User {UserId} confirmed email", user.Id);
 
+    _ = SendVerifiedEmailAsync(user);
+
     var redirectUrl = configuration["Resend:ConfirmationRedirectUrl"] ?? configuration["Email:ConfirmationRedirectUrl"];
     if (!string.IsNullOrWhiteSpace(redirectUrl) && Uri.IsWellFormedUriString(redirectUrl, UriKind.Absolute))
     {
@@ -148,5 +153,62 @@ public class AuthController(
       : $"{Request.Scheme}://{Request.Host}";
 
     return $"{safeBase}/api/auth/confirm-email?userId={WebUtility.UrlEncode(userId)}&token={WebUtility.UrlEncode(token)}";
+  }
+
+  private async Task NotifyAdminsAsync(ApplicationUser user)
+  {
+    var recipients = configuration["Notifications:NewSignupRecipients"];
+    if (string.IsNullOrWhiteSpace(recipients))
+    {
+      return;
+    }
+
+    var subject = "New Fourtify Defence signup";
+    var body = new StringBuilder()
+      .AppendLine("<p>A new user has signed up.</p>")
+      .AppendLine($"<p><strong>Email:</strong> {WebUtility.HtmlEncode(user.Email)}</p>");
+
+    if (!string.IsNullOrWhiteSpace(user.FullName))
+    {
+      body.AppendLine($"<p><strong>Name:</strong> {WebUtility.HtmlEncode(user.FullName)}</p>");
+    }
+
+    var addresses = recipients
+      .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+      .Distinct(StringComparer.OrdinalIgnoreCase);
+
+    foreach (var address in addresses)
+    {
+      try
+      {
+        await emailSender.SendEmailAsync(address, subject, body.ToString());
+      }
+      catch (Exception ex)
+      {
+        logger.LogWarning(ex, "Failed to send signup notification to {AdminEmail}", address);
+      }
+    }
+  }
+
+  private async Task SendVerifiedEmailAsync(ApplicationUser user)
+  {
+    try
+    {
+      var websiteLink = configuration["Notifications:WebsiteLink"] ?? "https://fourd.com.au";
+      var demoLink = configuration["Notifications:DemoLink"] ?? "https://fourd.com.au/demo";
+
+      var subject = "Your Fourtify Defence account is verified";
+      var body = $"""
+        <p>Your email has been confirmed successfully. You can now sign in.</p>
+        <p><a href="{WebUtility.HtmlEncode(websiteLink)}" target="_blank" rel="noreferrer">Visit our website</a></p>
+        <p><a href="{WebUtility.HtmlEncode(demoLink)}" target="_blank" rel="noreferrer">Watch a demo</a></p>
+        """;
+
+      await emailSender.SendEmailAsync(user.Email!, subject, body);
+    }
+    catch (Exception ex)
+    {
+      logger.LogWarning(ex, "Failed to send post-verification email to {Email}", user.Email);
+    }
   }
 }

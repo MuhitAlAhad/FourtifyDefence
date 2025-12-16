@@ -19,6 +19,7 @@
   - Email confirmation uses Resend (recommended):  
     - `Resend__ApiKey`, `Resend__From` (e.g., `Your Name <noreply@yourdomain.com>`), optional `Resend__ConfirmationLinkBaseUrl` (e.g., `https://your-api.onrender.com`).  
     - Optional redirect after confirming: `Resend__ConfirmationRedirectUrl` (e.g., `https://your-frontend.com/login`).
+    - Optional admin notifications on new signup: `Notifications__NewSignupRecipients` (comma-separated list, e.g., `dani@fourd.com.au`).
     - If you prefer SMTP instead, swap the email sender implementation and set the corresponding SMTP vars.
   
   ## Frontend ↔ API (Vercel → Render)
