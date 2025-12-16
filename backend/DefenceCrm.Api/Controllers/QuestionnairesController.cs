@@ -43,6 +43,6 @@ public class QuestionnairesController(ApplicationDbContext dbContext, ILogger<Qu
 
     logger.LogInformation("Questionnaire submitted for {Email} ({Company})", entity.AdminEmail, entity.CompanyName);
 
-    return CreatedAtAction(nameof(Submit), new { id = entity.Id }, null);
+    return CreatedAtAction(nameof(Submit), new { id = entity.Id }, new { id = entity.Id });
   }
 }

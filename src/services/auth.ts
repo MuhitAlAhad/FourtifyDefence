@@ -48,7 +48,17 @@ export async function request<T>(path: string, options: RequestInit): Promise<T>
     return undefined as T;
   }
 
-  return (await response.json()) as T;
+  const contentType = response.headers.get('Content-Type') ?? '';
+  if (!contentType.toLowerCase().includes('application/json')) {
+    return undefined as T;
+  }
+
+  const text = await response.text();
+  if (!text) {
+    return undefined as T;
+  }
+
+  return JSON.parse(text) as T;
 }
 
 export async function signup(payload: SignupPayload): Promise<AuthResponse> {
