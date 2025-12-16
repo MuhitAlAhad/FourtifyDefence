@@ -5,13 +5,47 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Mail, Phone, MapPin, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import bgImage from 'figma:asset/2135485e1d21f7ff57b035a705371c25d20cb5d2.png';
+import { submitContact } from '../services/contact';
 
 export function ContactPage() {
   const [showThankYou, setShowThankYou] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    companyName: '',
+    email: '',
+    phone: '',
+    employeeRange: '',
+    requirements: '',
+    consent: false
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setShowThankYou(true);
+    if (isSubmitting) return;
+    setError(null);
+    setIsSubmitting(true);
+
+    try {
+      await submitContact({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        companyName: formData.companyName,
+        email: formData.email,
+        phone: formData.phone,
+        employeeRange: formData.employeeRange || undefined,
+        requirements: formData.requirements,
+        consent: formData.consent
+      });
+      setShowThankYou(true);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Could not submit your enquiry. Please try again.';
+      setError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (showThankYou) {
@@ -153,6 +187,8 @@ export function ContactPage() {
                       <label className="block text-[#e2e8f0] mb-2">First Name *</label>
                       <input
                         type="text"
+                        value={formData.firstName}
+                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                         className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
                         required
                       />
@@ -161,6 +197,8 @@ export function ContactPage() {
                       <label className="block text-[#e2e8f0] mb-2">Last Name *</label>
                       <input
                         type="text"
+                        value={formData.lastName}
+                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                         className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
                         required
                       />
@@ -171,6 +209,8 @@ export function ContactPage() {
                     <label className="block text-[#e2e8f0] mb-2">Company Name *</label>
                     <input
                       type="text"
+                      value={formData.companyName}
+                      onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                       className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
                       required
                     />
@@ -180,6 +220,8 @@ export function ContactPage() {
                     <label className="block text-[#e2e8f0] mb-2">Work Email *</label>
                     <input
                       type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
                       required
                     />
@@ -189,6 +231,8 @@ export function ContactPage() {
                     <label className="block text-[#e2e8f0] mb-2">Phone Number *</label>
                     <input
                       type="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
                       required
                     />
@@ -196,8 +240,12 @@ export function ContactPage() {
                   
                   <div>
                     <label className="block text-[#e2e8f0] mb-2">Number of Employees</label>
-                    <select className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors">
-                      <option>Select range</option>
+                    <select
+                      className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
+                      value={formData.employeeRange}
+                      onChange={(e) => setFormData({ ...formData, employeeRange: e.target.value })}
+                    >
+                      <option value="">Select range</option>
                       <option>1-10</option>
                       <option>11-50</option>
                       <option>51-100</option>
@@ -209,6 +257,8 @@ export function ContactPage() {
                     <label className="block text-[#e2e8f0] mb-2">Your Requirements *</label>
                     <textarea
                       rows={5}
+                      value={formData.requirements}
+                      onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
                       className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors resize-none"
                       placeholder="Tell us about your DISP compliance needs, timeline, and any specific requirements..."
                       required
@@ -219,6 +269,8 @@ export function ContactPage() {
                     <input
                       type="checkbox"
                       id="consent"
+                      checked={formData.consent}
+                      onChange={(e) => setFormData({ ...formData, consent: e.target.checked })}
                       className="mt-1 w-4 h-4 accent-[#3dd68c]"
                       required
                     />
@@ -227,9 +279,10 @@ export function ContactPage() {
                     </label>
                   </div>
                   
-                  <Button variant="primary" size="lg" className="w-full">
-                    Submit Inquiry
+                  <Button variant="primary" size="lg" className="w-full" type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
                   </Button>
+                  {error && <div className="text-[#ef4444] text-sm">{error}</div>}
                 </form>
               </div>
             </div>

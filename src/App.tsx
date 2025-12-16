@@ -11,6 +11,7 @@ import { SubscribePage } from './components/SubscribePage';
 import { PaymentPage } from './components/PaymentPage';
 import { QualificationPage } from './components/QualificationPage';
 import { ScrollToTop } from './components/ScrollToTop';
+import { ConfirmEmailPage } from './components/ConfirmEmailPage';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/qualify" element={<QualificationPage />} />
         <Route path="/subscribe" element={<SubscribePage />} />
         <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/confirm-email" element={<ConfirmEmailPage />} />
       </Routes>
     </Router>
   );
