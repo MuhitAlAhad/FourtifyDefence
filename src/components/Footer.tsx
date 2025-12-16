@@ -25,8 +25,6 @@ export function Footer() {
             <ul className="space-y-3">
               <li><a href="#features" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Features</a></li>
               <li><a href="#pricing" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Pricing</a></li>
-              <li><a href="#" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Integrations</a></li>
-              <li><a href="#" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">API Documentation</a></li>
             </ul>
           </div>
 
@@ -35,21 +33,16 @@ export function Footer() {
             <h5 className="text-[#e2e8f0] mb-4">Company</h5>
             <ul className="space-y-3">
               <li><Link to="/about" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">About Us</Link></li>
-              <li><a href="#" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Careers</a></li>
-              <li><a href="#" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Contact</a></li>
-              <li><a href="#" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Blog</a></li>
+              <li><Link to="/contact" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Contact</Link></li>
             </ul>
           </div>
 
           {/* Legal */}
           <div>
             <h5 className="text-[#e2e8f0] mb-4">Legal & Compliance</h5>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Security</a></li>
-              <li><a href="#" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Compliance</a></li>
-            </ul>
+            <p className="text-[#64748b]">
+              Policies coming soon. For questions, email <span className="text-[#3dd68c]">dani@fourd.com.au</span>.
+            </p>
           </div>
         </div>
 
