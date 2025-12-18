@@ -25,8 +25,7 @@ export function LoginPage() {
     try {
       await signin({ email, password });
       localStorage.setItem('isAuthenticated', 'true');
-      const hasSubscription = localStorage.getItem('hasActiveSubscription') === 'true';
-      navigate(hasSubscription ? '/dashboard' : '/subscribe');
+      navigate('/coming-soon');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Sign in failed. Please try again.';
       setError(message);
