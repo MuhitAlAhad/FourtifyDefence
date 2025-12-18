@@ -4,6 +4,8 @@ public class QualificationSubmissionRequest
 {
   public required string Abn { get; init; }
   public required string CompanyName { get; init; }
+  public required string CompanySize { get; init; }
+  public required string Industry { get; init; }
   public required string ContactName { get; init; }
   public required string ContactEmail { get; init; }
   public required string ContactPhone { get; init; }

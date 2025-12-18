@@ -66,8 +66,8 @@ public class QuestionnairesController(
     {
       CompanyName = request.CompanyName,
       Abn = request.Abn,
-      CompanySize = string.Empty,
-      Industry = string.Empty,
+      CompanySize = request.CompanySize,
+      Industry = request.Industry,
       ContactName = request.ContactName,
       ContactEmail = request.ContactEmail,
       ContactPhone = request.ContactPhone,
@@ -106,6 +106,8 @@ public class QuestionnairesController(
       <p>{WebUtility.HtmlEncode(subject)}.</p>
       <p><strong>Company:</strong> {WebUtility.HtmlEncode(entity.CompanyName)}</p>
       <p><strong>ABN:</strong> {WebUtility.HtmlEncode(entity.Abn)}</p>
+      <p><strong>Company Size:</strong> {WebUtility.HtmlEncode(entity.CompanySize)}</p>
+      <p><strong>Industry:</strong> {WebUtility.HtmlEncode(entity.Industry)}</p>
       <p><strong>Contact:</strong> {WebUtility.HtmlEncode(entity.ContactName)} ({WebUtility.HtmlEncode(entity.ContactEmail)})</p>
       <p><strong>Phone:</strong> {WebUtility.HtmlEncode(entity.ContactPhone)}</p>
       <p><strong>DISP Member:</strong> {WebUtility.HtmlEncode(entity.DispMember)}</p>

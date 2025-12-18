@@ -29,6 +29,8 @@ export function QualificationPage() {
     const qualificationData = {
       abn,
       companyName,
+      companySize: formData.get('companySize'),
+      industry: formData.get('industry'),
       contactName: formData.get('contactName'),
       contactEmail: formData.get('contactEmail'),
       contactPhone: formData.get('contactPhone'),
@@ -45,6 +47,8 @@ export function QualificationPage() {
       await submitQualification({
         abn: String(qualificationData.abn ?? ''),
         companyName: String(qualificationData.companyName ?? ''),
+        companySize: String(qualificationData.companySize ?? ''),
+        industry: String(qualificationData.industry ?? ''),
         contactName: String(qualificationData.contactName ?? ''),
         contactEmail: String(qualificationData.contactEmail ?? ''),
         contactPhone: String(qualificationData.contactPhone ?? ''),
@@ -188,6 +192,38 @@ export function QualificationPage() {
                         placeholder="Auto-filled from ABN lookup or enter manually"
                         required
                       />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-[#e2e8f0] mb-2">Company Size *</label>
+                      <select
+                        name="companySize"
+                        required
+                        className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
+                      >
+                        <option value="">Select company size</option>
+                        <option value="1-25">1-25 employees</option>
+                        <option value="26-100">26-100 employees</option>
+                        <option value="101-500">101-500 employees</option>
+                        <option value="500+">500+ employees</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-[#e2e8f0] mb-2">Industry Sector *</label>
+                      <select
+                        name="industry"
+                        required
+                        className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
+                      >
+                        <option value="">Select industry</option>
+                        <option value="aerospace">Aerospace & Aviation</option>
+                        <option value="maritime">Maritime Defence</option>
+                        <option value="land">Land Systems</option>
+                        <option value="electronics">Electronics & Communications</option>
+                        <option value="cyber">Cybersecurity Services</option>
+                        <option value="consulting">Defence Consulting</option>
+                      </select>
                     </div>
                   </div>
                 </div>

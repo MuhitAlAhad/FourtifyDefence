@@ -32,6 +32,8 @@ export async function submitQuestionnaire(payload: QuestionnaireSubmission): Pro
 export interface QualificationSubmission {
   abn: string;
   companyName: string;
+  companySize: string;
+  industry: string;
   contactName: string;
   contactEmail: string;
   contactPhone: string;
