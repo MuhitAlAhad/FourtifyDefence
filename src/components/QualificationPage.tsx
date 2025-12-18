@@ -2,35 +2,29 @@ import { Header } from './Header';
 import { Footer } from './Footer';
 import { Button } from './Button';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import bgImage from 'figma:asset/2135485e1d21f7ff57b035a705371c25d20cb5d2.png';
+import { submitQualification } from '../services/questionnaire';
 
 export function QualificationPage() {
   const navigate = useNavigate();
   const [showThankYou, setShowThankYou] = useState(false);
   const [abn, setAbn] = useState('');
   const [companyName, setCompanyName] = useState('');
-  const [isLoadingABN, setIsLoadingABN] = useState(false);
   const [csoNotSure, setCsoNotSure] = useState(false);
   const [soNotSure, setSoNotSure] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock ABN lookup - in production, this would call the actual ABN Lookup API
-  const handleABNLookup = async () => {
-    if (abn.length === 11) {
-      setIsLoadingABN(true);
-      // Simulate API call
-      setTimeout(() => {
-        // Mock company name based on ABN
-        setCompanyName('Example Defence Solutions Pty Ltd');
-        setIsLoadingABN(false);
-      }, 500);
-    }
-  };
+  // ABN lookup removed until integration is available.
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Store qualification data
+    if (isSubmitting) return;
+    setError(null);
+    setIsSubmitting(true);
+
     const formData = new FormData(e.target as HTMLFormElement);
     const qualificationData = {
       abn,
@@ -41,15 +35,34 @@ export function QualificationPage() {
       defenceIndustry: formData.get('defenceIndustry'),
       dispMember: formData.get('dispMember'),
       governmentPanels: formData.get('governmentPanels'),
-      nominatedCSO: csoNotSure ? 'Not sure' : formData.get('nominatedCSO'),
-      nominatedSO: soNotSure ? 'Not sure' : formData.get('nominatedSO'),
+      nominatedCso: csoNotSure ? undefined : formData.get('nominatedCSO'),
+      nominatedSo: soNotSure ? undefined : formData.get('nominatedSO'),
+      csoNotSure,
+      soNotSure
     };
-    
-    // Store in sessionStorage for later use
-    sessionStorage.setItem('qualificationData', JSON.stringify(qualificationData));
-    
-    // Show thank you message
-    setShowThankYou(true);
+
+    try {
+      await submitQualification({
+        abn: String(qualificationData.abn ?? ''),
+        companyName: String(qualificationData.companyName ?? ''),
+        contactName: String(qualificationData.contactName ?? ''),
+        contactEmail: String(qualificationData.contactEmail ?? ''),
+        contactPhone: String(qualificationData.contactPhone ?? ''),
+        defenceIndustry: String(qualificationData.defenceIndustry ?? ''),
+        dispMember: String(qualificationData.dispMember ?? ''),
+        governmentPanels: qualificationData.governmentPanels ? String(qualificationData.governmentPanels) : undefined,
+        nominatedCso: qualificationData.nominatedCso ? String(qualificationData.nominatedCso) : undefined,
+        nominatedSo: qualificationData.nominatedSo ? String(qualificationData.nominatedSo) : undefined,
+        csoNotSure,
+        soNotSure
+      });
+      setShowThankYou(true);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Could not submit your enquiry. Please try again.';
+      setError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleContinue = () => {
@@ -86,20 +99,13 @@ export function QualificationPage() {
                 <h2 className="text-[#e2e8f0] mb-4">Thank You for Your Enquiry</h2>
                 
                 <p className="text-[#94a3b8] text-lg mb-8 max-w-[600px] mx-auto">
-                  A Fourtify Defence specialist will be in contact shortly to discuss your needs and schedule a platform demonstration or onboarding session.
+                  Thank you. Someone will be in touch shortly.
                 </p>
                 
-                <p className="text-[#3dd68c] mb-8">
-                  We appreciate the opportunity to support your organisation.
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button variant="primary" size="lg" onClick={handleContinue}>
-                    Continue to Subscription
-                  </Button>
+                <div className="flex justify-center">
                   <Link to="/">
-                    <Button variant="outline" size="lg">
-                      Return to Home
+                    <Button variant="primary" size="lg">
+                      Go to Home
                     </Button>
                   </Link>
                 </div>
@@ -158,28 +164,17 @@ export function QualificationPage() {
                   <div className="space-y-4 pl-10">
                     <div>
                       <label className="block text-[#e2e8f0] mb-2">Australian Business Number (ABN) *</label>
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={abn}
-                          onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, '').slice(0, 11);
-                            setAbn(value);
-                          }}
-                          className="flex-1 px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
-                          placeholder="Enter 11-digit ABN"
-                          required
-                        />
-                        <button
-                          type="button"
-                          onClick={handleABNLookup}
-                          disabled={abn.length !== 11 || isLoadingABN}
-                          className="px-6 py-3 bg-[#3dd68c] text-[#0f1419] clip-corner-sm hover:bg-[#2ab872] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                        >
-                          <Search className="w-4 h-4" />
-                          {isLoadingABN ? 'Looking up...' : 'Lookup'}
-                        </button>
-                      </div>
+                      <input
+                        type="text"
+                        value={abn}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, '').slice(0, 11);
+                          setAbn(value);
+                        }}
+                        className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
+                        placeholder="Enter 11-digit ABN"
+                        required
+                      />
                       <p className="text-sm text-[#94a3b8] mt-1">Format: 12345678901 (11 digits)</p>
                     </div>
                     
@@ -395,9 +390,10 @@ export function QualificationPage() {
                     </label>
                   </div>
                   
-                  <Button variant="primary" size="lg" className="w-full" type="submit">
-                    Submit Qualification
+                  <Button variant="primary" size="lg" className="w-full" type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Submitting...' : 'Submit Qualification'}
                   </Button>
+                  {error && <div className="text-[#ef4444] text-sm mt-3">{error}</div>}
                   <p className="text-center text-sm text-[#94a3b8] mt-4">
                     All fields marked with * are required
                   </p>

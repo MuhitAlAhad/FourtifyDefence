@@ -28,3 +28,25 @@ export async function submitQuestionnaire(payload: QuestionnaireSubmission): Pro
     body: JSON.stringify(payload),
   });
 }
+
+export interface QualificationSubmission {
+  abn: string;
+  companyName: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone: string;
+  defenceIndustry: string;
+  dispMember: string;
+  governmentPanels?: string;
+  nominatedCso?: string;
+  nominatedSo?: string;
+  csoNotSure: boolean;
+  soNotSure: boolean;
+}
+
+export async function submitQualification(payload: QualificationSubmission): Promise<void> {
+  await request<void>('/questionnaires/qualification', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}

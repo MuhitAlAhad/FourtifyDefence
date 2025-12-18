@@ -55,9 +55,11 @@ export function HomePage() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                    Watch Demo
-                  </Button>
+                  <Link to="/qualify" className="w-full sm:w-auto">
+                    <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                      Watch Demo
+                    </Button>
+                  </Link>
                 </div>
                 
                 <div className="flex items-center gap-6 mt-8 text-sm">
@@ -296,7 +298,7 @@ export function HomePage() {
                   </ul>
                   
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <Link to={plan.name === 'SME Custom' ? '/contact' : '/qualify'} className="flex-1">
+                    <Link to="/qualify" className="flex-1">
                       <Button 
                         variant={plan.highlighted ? 'primary' : 'outline'} 
                         size="lg"
@@ -305,7 +307,7 @@ export function HomePage() {
                         {plan.name === 'SME Custom' ? 'Get Started' : 'Subscribe Now'}
                       </Button>
                     </Link>
-                    <Link to="/register" className="flex-1">
+                    <Link to="/qualify" className="flex-1">
                       <Button 
                         variant="secondary" 
                         size="lg"

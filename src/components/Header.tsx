@@ -6,6 +6,13 @@ import logoImage from 'figma:asset/35f931b802bf39733103d00f96fb6f9c21293f6e.png'
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const authEnabled = false;
+
+  const handleAuthClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!authEnabled) {
+      event.preventDefault();
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f1419]/95 backdrop-blur-sm border-b border-[#2a2f38]">
@@ -26,10 +33,10 @@ export function Header() {
 
           {/* Auth Buttons */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link to="/login">
+            <Link to="/login" onClick={handleAuthClick} aria-disabled={!authEnabled}>
               <Button variant="secondary" size="sm">Login</Button>
             </Link>
-            <Link to="/register">
+            <Link to="/register" onClick={handleAuthClick} aria-disabled={!authEnabled}>
               <Button variant="primary" size="sm">Sign Up</Button>
             </Link>
           </div>
@@ -51,10 +58,10 @@ export function Header() {
             <a href="#industries" className="text-[#94a3b8] hover:text-[#3dd68c] transition-colors py-2">Industries</a>
             <a href="#pricing" className="text-[#94a3b8] hover:text-[#3dd68c] transition-colors py-2">Pricing</a>
             <div className="flex flex-col gap-3 mt-4">
-              <Link to="/login">
+              <Link to="/login" onClick={handleAuthClick} aria-disabled={!authEnabled}>
                 <Button variant="secondary" size="sm" className="w-full">Login</Button>
               </Link>
-              <Link to="/register">
+              <Link to="/register" onClick={handleAuthClick} aria-disabled={!authEnabled}>
                 <Button variant="primary" size="sm" className="w-full">Sign Up</Button>
               </Link>
             </div>

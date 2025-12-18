@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { HomePage } from './components/HomePage';
 import { LoginPage } from './components/LoginPage';
 import { RegisterPage } from './components/RegisterPage';
@@ -16,13 +16,21 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { ComingSoonPage } from './components/ComingSoonPage';
 
 export default function App() {
+  const authEnabled = false;
+
   return (
     <Router>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/login"
+          element={authEnabled ? <LoginPage /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/register"
+          element={authEnabled ? <RegisterPage /> : <Navigate to="/" replace />}
+        />
         <Route
           path="/dashboard"
           element={
