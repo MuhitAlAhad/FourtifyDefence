@@ -234,6 +234,7 @@ export function HomePage() {
                   features: [
                     'Up to 100 personnel',
                     'All DISP modules included',
+                    'Annual Security Review',
                     'Document storage (100GB)',
                     'Priority support',
                     'Advanced reporting & analytics',
@@ -250,6 +251,7 @@ export function HomePage() {
                   period: '',
                   description: 'Tailored solutions for small and medium enterprises',
                   features: [
+                    'Annual Security Review',
                     'Customized user capacity',
                     'Annual Security Reporting',
                     'Flexible DISP modules',

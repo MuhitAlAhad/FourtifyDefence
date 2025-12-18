@@ -12,6 +12,7 @@ import { PaymentPage } from './components/PaymentPage';
 import { QualificationPage } from './components/QualificationPage';
 import { ScrollToTop } from './components/ScrollToTop';
 import { ConfirmEmailPage } from './components/ConfirmEmailPage';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 export default function App() {
   return (
@@ -21,9 +22,30 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/disp-readiness" element={<DISPReadiness />} />
-        <Route path="/account" element={<AccountBilling />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute requireSubscription>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/disp-readiness"
+          element={
+            <ProtectedRoute requireSubscription>
+              <DISPReadiness />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/account"
+          element={
+            <ProtectedRoute requireSubscription>
+              <AccountBilling />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/qualify" element={<QualificationPage />} />

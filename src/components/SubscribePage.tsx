@@ -64,6 +64,7 @@ export function SubscribePage() {
                     {[
                       'Up to 100 personnel',
                       'All DISP modules included',
+                      'Annual Security Review',
                       'Document storage (100GB)',
                       'Priority support',
                       'Advanced reporting',

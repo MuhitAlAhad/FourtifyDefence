@@ -23,6 +23,7 @@ export function PaymentPage() {
     
     // Simulate payment processing
     setTimeout(() => {
+      localStorage.setItem('hasActiveSubscription', 'true');
       navigate('/dashboard');
     }, 3000);
   };

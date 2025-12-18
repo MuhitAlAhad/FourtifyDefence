@@ -22,6 +22,7 @@ export function AccountBilling() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
     navigate('/');
   };
   

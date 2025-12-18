@@ -15,7 +15,12 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-2 text-[#64748b]">
               <Mail className="w-4 h-4" />
-              <span>dani@fourd.com.au</span>
+              <a
+                href="mailto:dani@fourd.com.au"
+                className="hover:text-[#3dd68c] transition-colors"
+              >
+                dani@fourd.com.au
+              </a>
             </div>
           </div>
 
@@ -41,7 +46,14 @@ export function Footer() {
           <div>
             <h5 className="text-[#e2e8f0] mb-4">Legal & Compliance</h5>
             <p className="text-[#64748b]">
-              Policies coming soon. For questions, email <span className="text-[#3dd68c]">dani@fourd.com.au</span>.
+              Policies coming soon. For questions, email{' '}
+              <a
+                href="mailto:dani@fourd.com.au"
+                className="text-[#3dd68c] hover:text-[#2ab872] transition-colors"
+              >
+                dani@fourd.com.au
+              </a>
+              .
             </p>
           </div>
         </div>

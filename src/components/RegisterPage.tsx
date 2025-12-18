@@ -1,10 +1,10 @@
 import { useState, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Shield, ArrowLeft, ArrowRight, Building2, User, CreditCard, FileCheck, Search, CheckCircle2 } from 'lucide-react';
+import { Shield, ArrowLeft, ArrowRight, Building2, User, CreditCard, FileCheck, CheckCircle2 } from 'lucide-react';
 import { Button } from './Button';
 import { Input } from './Input';
 import logoImage from 'figma:asset/35f931b802bf39733103d00f96fb6f9c21293f6e.png';
-import { lookupAbn, signup } from '../services/auth';
+import { signup } from '../services/auth';
 import { submitQuestionnaire } from '../services/questionnaire';
 
 export function RegisterPage() {
@@ -12,8 +12,6 @@ export function RegisterPage() {
   const [step, setStep] = useState(1);
   const [showThankYou, setShowThankYou] = useState(false);
   const [abn, setAbn] = useState('');
-  const [isLoadingABN, setIsLoadingABN] = useState(false);
-  const [abnError, setAbnError] = useState<string | null>(null);
   const [csoNotSure, setCsoNotSure] = useState(false);
   const [soNotSure, setSoNotSure] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,27 +42,7 @@ export function RegisterPage() {
     phone: ''
   });
   
-  // Mock ABN lookup - in production, this would call the actual ABN Lookup API
-  const handleABNLookup = async () => {
-    const cleanedAbn = abn.replace(/\D/g, '');
-    if (cleanedAbn.length !== 11) {
-      setAbnError('ABN must be 11 digits.');
-      return;
-    }
-
-    setIsLoadingABN(true);
-    setAbnError(null);
-    try {
-      const result = await lookupAbn(cleanedAbn);
-      updateFormData('abn', result.abn);
-      updateFormData('companyName', result.entityName);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'ABN lookup failed. Please try again.';
-      setAbnError(message);
-    } finally {
-      setIsLoadingABN(false);
-    }
-  };
+  // ABN lookup removed until banking integration is available.
   
   const validateCurrentStep = () => {
     switch (step) {
@@ -185,9 +163,8 @@ export function RegisterPage() {
     }
   };
 
-  const handleContinueToDashboard = () => {
-    // Navigate to dashboard after registration
-    navigate('/dashboard');
+  const handleGoToLogin = () => {
+    navigate('/login');
   };
   
   const updateFormData = (field: string, value: string) => {
@@ -212,12 +189,12 @@ export function RegisterPage() {
             </p>
             
             <p className="text-[#3dd68c] mb-8">
-              We appreciate the opportunity to support your organisation.
+              Please check your inbox to confirm your email before signing in.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="primary" size="lg" onClick={handleContinueToDashboard}>
-                Continue to Dashboard
+              <Button variant="primary" size="lg" onClick={handleGoToLogin}>
+                Go to Login
               </Button>
               <Link to="/">
                 <Button variant="outline" size="lg">
@@ -294,34 +271,19 @@ export function RegisterPage() {
                   <label className="text-[#e2e8f0] mb-2 block">
                     Australian Business Number (ABN) <span className="text-[#3dd68c]">*</span>
                   </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={abn}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, '').slice(0, 11);
-                        setAbn(value);
-                        setAbnError(null);
-                        updateFormData('abn', value);
-                      }}
-                      className="flex-1 bg-[#1a1d23] border border-[#3a3f48] px-4 py-3 text-[#e2e8f0] focus:outline-none focus:border-[#3dd68c] transition-colors clip-corner-sm"
-                      placeholder="Enter 11-digit ABN"
-                      required
-                    />
-                    <button
-                      type="button"
-                      onClick={handleABNLookup}
-                      disabled={abn.length !== 11 || isLoadingABN}
-                      className="px-6 py-3 bg-[#3dd68c] text-[#0f1419] clip-corner-sm hover:bg-[#2ab872] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                    >
-                      <Search className="w-4 h-4" />
-                      {isLoadingABN ? 'Looking up...' : 'Lookup'}
-                    </button>
-                  </div>
+                  <input
+                    type="text"
+                    value={abn}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, '').slice(0, 11);
+                      setAbn(value);
+                      updateFormData('abn', value);
+                    }}
+                    className="w-full bg-[#1a1d23] border border-[#3a3f48] px-4 py-3 text-[#e2e8f0] focus:outline-none focus:border-[#3dd68c] transition-colors clip-corner-sm"
+                    placeholder="Enter 11-digit ABN"
+                    required
+                  />
                   <p className="text-sm text-[#94a3b8] mt-1">Format: 12345678901 (11 digits)</p>
-                  {abnError && (
-                    <p className="text-sm text-[#ef4444] mt-2">{abnError}</p>
-                  )}
                 </div>
                 
                 <Input 
@@ -545,14 +507,19 @@ export function RegisterPage() {
                       id: 'professional',
                       name: 'Fourtify Professional',
                       price: '$2,099/month (invoiced monthly)',
-                      features: ['Up to 100 personnel', 'All DISP modules', '100GB storage', 'Priority support', 'Dedicated account manager', 'Annual Security Reporting'],
+                      features: [
+                        'Up to 100 personnel',
+                        'All DISP modules included',
+                        'Annual Security Review',
+                        'Document storage (100GB)',
+                        'Priority support',
+                        'Advanced reporting & analytics',
+                        'Custom workflows',
+                        'API access',
+                        'Dedicated account manager',
+                        'Annual Security Reporting'
+                      ],
                       recommended: true
-                    },
-                    {
-                      id: 'enterprise',
-                      name: 'SME Custom',
-                      price: 'Custom pricing',
-                      features: ['Annual Security Reporting', 'Unlimited personnel', 'All features + custom modules', 'Unlimited storage', '24/7 support', 'Custom workflows']
                     }
                   ].map((plan) => (
                     <div 

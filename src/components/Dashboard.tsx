@@ -14,8 +14,10 @@ import {
 } from 'lucide-react';
 import { Button } from './Button';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function Dashboard() {
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const kpis = [
@@ -92,6 +94,11 @@ export function Dashboard() {
       time: '1d ago'
     }
   ];
+
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
+    navigate('/');
+  };
   
   return (
     <div className="min-h-screen bg-[#1a1d23] flex">
@@ -122,6 +129,10 @@ export function Dashboard() {
                 <Bell className="w-6 h-6 text-[#94a3b8]" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-[#ef4444] rounded-full"></span>
               </button>
+
+              <Button variant="outline" size="sm" onClick={handleLogout}>
+                Sign Out
+              </Button>
             </div>
           </div>
         </header>
