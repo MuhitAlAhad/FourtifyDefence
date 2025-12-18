@@ -520,6 +520,20 @@ export function RegisterPage() {
                         'Annual Security Reporting'
                       ],
                       recommended: true
+                    },
+                    {
+                      id: 'enterprise',
+                      name: 'SME Custom',
+                      price: 'Custom pricing',
+                      features: [
+                        'Annual Security Review',
+                        'Annual Security Reporting',
+                        'Unlimited personnel',
+                        'All features + custom modules',
+                        'Unlimited storage',
+                        '24/7 support',
+                        'Custom workflows'
+                      ]
                     }
                   ].map((plan) => (
                     <div 
