@@ -16,4 +16,5 @@ public class QualificationSubmissionRequest
   public string? NominatedSo { get; init; }
   public bool CsoNotSure { get; init; }
   public bool SoNotSure { get; init; }
+  public string? qualifyLocation { get; init; }
 }

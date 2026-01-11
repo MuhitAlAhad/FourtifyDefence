@@ -55,7 +55,7 @@ export function HomePage() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link to="/qualify" className="w-full sm:w-auto">
+                  <Link to="/qualify" state={{ qualifyLocation: "Watch Demo" }} className="w-full sm:w-auto">
                     <Button variant="outline" size="lg" className="w-full sm:w-auto">
                       Watch Demo
                     </Button>
@@ -208,7 +208,7 @@ export function HomePage() {
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[#e2e8f0]">{industry}</span>
-                    <ChevronRight className="w-5 h-5 text-[#3dd68c] opacity-0 group-hover:opacity-100 transition-opacity" />
+                    {/* <ChevronRight className="w-5 h-5 text-[#3dd68c] opacity-0 group-hover:opacity-100 transition-opacity" /> */}
                   </div>
                 </div>
               ))}
@@ -298,7 +298,7 @@ export function HomePage() {
                   </ul>
                   
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <Link to="/qualify" className="flex-1">
+                    <Link to="/qualify" state={{ qualifyLocation: plan.name }} className="flex-1">
                       <Button 
                         variant={plan.highlighted ? 'primary' : 'outline'} 
                         size="lg"
@@ -307,7 +307,7 @@ export function HomePage() {
                         {plan.name === 'SME Custom' ? 'Get Started' : 'Subscribe Now'}
                       </Button>
                     </Link>
-                    <Link to="/qualify" className="flex-1">
+                    <Link to="/qualify" state={{ qualifyLocation: "Get Demo" }} className="flex-1">
                       <Button 
                         variant="secondary" 
                         size="lg"

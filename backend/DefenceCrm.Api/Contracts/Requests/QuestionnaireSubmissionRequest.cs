@@ -2,6 +2,7 @@ namespace DefenceCrm.Api.Contracts.Requests;
 
 public class QuestionnaireSubmissionRequest
 {
+  public string? id { get; init; }
   public required string CompanyName { get; init; }
   public required string Abn { get; init; }
   public required string CompanySize { get; init; }

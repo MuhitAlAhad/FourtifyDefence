@@ -140,7 +140,7 @@ export function ContactPage() {
                     </div>
                     <div>
                       <h5 className="text-[#e2e8f0] mb-1">Email</h5>
-                      <p className="text-[#94a3b8]">dani@fourd.com.au</p>
+                      <p className="text-[#94a3b8]">info@fourd.com.au</p>
                     </div>
                   </div>
                   
@@ -160,7 +160,7 @@ export function ContactPage() {
                     </div>
                     <div>
                       <h5 className="text-[#e2e8f0] mb-1">Location</h5>
-                      <p className="text-[#94a3b8]">301/21 University Ave<br />Canberra ACT 2601</p>
+                      <p className="text-[#94a3b8]">Suite 6, Level 1, 17-21 University Ave<br />Canberra ACT 2601</p>
                     </div>
                   </div>
                 </div>

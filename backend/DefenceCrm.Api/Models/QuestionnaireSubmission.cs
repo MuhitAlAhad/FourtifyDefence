@@ -24,7 +24,8 @@ public class QuestionnaireSubmission
   public bool SoNotSure { get; set; }
 
   public string Plan { get; set; } = string.Empty;
-
+  public string? SubmittedVia { get; set; } = string.Empty;
+  public string? Status { get; set; } = string.Empty;
   public string AdminFirstName { get; set; } = string.Empty;
   public string AdminLastName { get; set; } = string.Empty;
   public string AdminEmail { get; set; } = string.Empty;

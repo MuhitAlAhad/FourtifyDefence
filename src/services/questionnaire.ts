@@ -1,6 +1,7 @@
 import { request } from './auth';
 
 export interface QuestionnaireSubmission {
+  id: string;
   companyName: string;
   abn: string;
   companySize: string;
@@ -44,10 +45,11 @@ export interface QualificationSubmission {
   nominatedSo?: string;
   csoNotSure: boolean;
   soNotSure: boolean;
+  qualifyLocation: string;
 }
 
 export async function submitQualification(payload: QualificationSubmission): Promise<void> {
-  await request<void>('/questionnaires/qualification', {
+  return await request<void>('/questionnaires/qualification', {
     method: 'POST',
     body: JSON.stringify(payload),
   });

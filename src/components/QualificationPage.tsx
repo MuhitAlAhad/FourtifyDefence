@@ -1,7 +1,7 @@
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { Button } from './Button';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation  } from 'react-router-dom';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import bgImage from 'figma:asset/2135485e1d21f7ff57b035a705371c25d20cb5d2.png';
@@ -16,6 +16,9 @@ export function QualificationPage() {
   const [soNotSure, setSoNotSure] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const location = useLocation();
+  const selectedQualifyLocation = location.state?.qualifyLocation || 'Default Location';
+  const [choice, setChoice] = useState('Standard');
 
   // ABN lookup removed until integration is available.
 
@@ -40,11 +43,12 @@ export function QualificationPage() {
       nominatedCso: csoNotSure ? undefined : formData.get('nominatedCSO'),
       nominatedSo: soNotSure ? undefined : formData.get('nominatedSO'),
       csoNotSure,
-      soNotSure
+      soNotSure,
+      qualifyLocation: selectedQualifyLocation === "Fourtify Professional" ? choice : selectedQualifyLocation
     };
 
     try {
-      await submitQualification({
+      const submitData:any = await submitQualification({
         abn: String(qualificationData.abn ?? ''),
         companyName: String(qualificationData.companyName ?? ''),
         companySize: String(qualificationData.companySize ?? ''),
@@ -58,9 +62,19 @@ export function QualificationPage() {
         nominatedCso: qualificationData.nominatedCso ? String(qualificationData.nominatedCso) : undefined,
         nominatedSo: qualificationData.nominatedSo ? String(qualificationData.nominatedSo) : undefined,
         csoNotSure,
-        soNotSure
+        soNotSure,
+        qualifyLocation: qualificationData.qualifyLocation
       });
+
+      // 3️⃣ If payment URL exists, redirect immediately
+      if (submitData?.paymentUrl) {
+        // Redirecting immediately — do NOT update state before redirect
+        window.location.href = submitData.paymentUrl;
+        return; // Ensure nothing else runs after redirect
+      }
+      
       setShowThankYou(true);
+      
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Could not submit your enquiry. Please try again.';
       setError(message);
@@ -426,9 +440,48 @@ export function QualificationPage() {
                     </label>
                   </div>
                   
-                  <Button variant="primary" size="lg" className="w-full" type="submit" disabled={isSubmitting}>
+                  {selectedQualifyLocation !== 'Fourtify Professional' ? (
+                    // Standard Submit
+                    <Button 
+                      variant="primary" 
+                      size="lg" 
+                      className="w-full" 
+                      onClick={() => setChoice('Standard')} 
+                      type="submit" // Standard submit triggers form onSubmit
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? 'Submitting...' : 'Submit Qualification'}
+                    </Button>
+                  ) : (
+                    // Dual Choice - both call the same logic but pass different labels
+                    <div className="flex gap-4 w-full">
+                      <Button 
+                        variant="primary" 
+                        size="lg" 
+                        className="flex-1"
+                        type="submit" 
+                        onClick={() => setChoice('Interested')}
+                        disabled={isSubmitting}
+                      >
+                        I am very interested, tell me more!
+                      </Button>
+                      
+                      <Button 
+                        variant="outline" 
+                        size="lg" 
+                        className="flex-1"
+                        type="submit"
+                        onClick={() => setChoice('InterestedSignMeUp')}
+                        disabled={isSubmitting}
+                      >
+                        I know what I want, sign me up!
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* <Button variant="primary" size="lg" className="w-full" type="submit" disabled={isSubmitting}>
                     {isSubmitting ? 'Submitting...' : 'Submit Qualification'}
-                  </Button>
+                  </Button> */}
                   {error && <div className="text-[#ef4444] text-sm mt-3">{error}</div>}
                   <p className="text-center text-sm text-[#94a3b8] mt-4">
                     All fields marked with * are required

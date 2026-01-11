@@ -1,7 +1,8 @@
+using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
+using System.Net.Mail;
 using System.Text;
 using System.Text.Json;
-using Microsoft.Extensions.Options;
 
 namespace DefenceCrm.Api.Services;
 
@@ -10,7 +11,7 @@ public class ResendEmailSender(HttpClient httpClient, IOptions<ResendOptions> op
   private readonly HttpClient _client = httpClient;
   private readonly ResendOptions _options = optionsAccessor.Value;
 
-  public async Task SendEmailAsync(string to, string subject, string htmlBody)
+  public async Task SendEmailAsync(string to, string subject, string htmlBody, List<object>? attachments = null)
   {
     if (string.IsNullOrWhiteSpace(_options.ApiKey) || string.IsNullOrWhiteSpace(_options.From))
     {
@@ -20,12 +21,33 @@ public class ResendEmailSender(HttpClient httpClient, IOptions<ResendOptions> op
     using var request = new HttpRequestMessage(HttpMethod.Post, "https://api.resend.com/emails");
     request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _options.ApiKey);
 
+    if (attachments == null)
+    {
+        attachments = new List<object>();
+    }
+
+    //var attachments = new List<object>();
+
+    //if (!string.IsNullOrEmpty(attachmentPath))
+    //{
+    //    var fileBytes = await File.ReadAllBytesAsync(attachmentPath);
+    //    var base64File = Convert.ToBase64String(fileBytes);
+
+    //    attachments.Add(new
+    //    {
+    //        filename = Path.GetFileName(attachmentPath),
+    //        content = base64File,
+    //        contentType = "application/pdf" // or video/mp4, image/png, etc.
+    //    });
+    //}
+
     var payload = new
     {
       from = _options.From,
       to = new[] { to },
       subject,
-      html = htmlBody
+      html = htmlBody,
+      attachments = attachments
     };
 
     var json = JsonSerializer.Serialize(payload);

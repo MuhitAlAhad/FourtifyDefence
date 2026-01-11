@@ -1,17 +1,16 @@
-using System.IO;
 using DefenceCrm.Api.Contracts.Requests;
 using DefenceCrm.Api.Data;
 using DefenceCrm.Api.Models;
+using DefenceCrm.Api.Services;
 using DefenceCrm.Api.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.DataProtection;
-using Npgsql.EntityFrameworkCore.PostgreSQL;
-using DefenceCrm.Api.Services;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,6 +78,7 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<SignupRequestValidator>();
 builder.Services.Configure<ResendOptions>(builder.Configuration.GetSection("Resend"));
 builder.Services.AddHttpClient<IEmailSender, ResendEmailSender>();
+builder.Services.AddScoped<ICheckout2PaymentGateway, Checkout2PaymentGateway>();
 
 var app = builder.Build();
 

@@ -14,9 +14,10 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { ConfirmEmailPage } from './components/ConfirmEmailPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { ComingSoonPage } from './components/ComingSoonPage';
+import { Checkout2Payment } from './components/Checkout2Payment';
 
 export default function App() {
-  const authEnabled = false;
+  const authEnabled = localStorage.getItem('isAuthenticated')? (localStorage.getItem('isAuthenticated') == "true" ? false : true) : true;
 
   return (
     <Router>
@@ -70,6 +71,7 @@ export default function App() {
         <Route path="/subscribe" element={<SubscribePage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/confirm-email" element={<ConfirmEmailPage />} />
+        <Route path="/checkout2PaymentReturn" element={<Checkout2Payment />} />
       </Routes>
     </Router>
   );

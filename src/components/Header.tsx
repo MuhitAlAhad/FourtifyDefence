@@ -6,7 +6,7 @@ import logoImage from 'figma:asset/35f931b802bf39733103d00f96fb6f9c21293f6e.png'
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const authEnabled = false;
+  const authEnabled = localStorage.getItem('isAuthenticated')? (localStorage.getItem('isAuthenticated') == "true" ? false : true) : true;
 
   const handleAuthClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     if (!authEnabled) {

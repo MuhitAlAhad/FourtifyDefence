@@ -16,10 +16,10 @@ export function Footer() {
             <div className="flex items-center gap-2 text-[#64748b]">
               <Mail className="w-4 h-4" />
               <a
-                href="mailto:dani@fourd.com.au"
+                href="mailto:info@fourd.com.au"
                 className="hover:text-[#3dd68c] transition-colors"
               >
-                dani@fourd.com.au
+                info@fourd.com.au
               </a>
             </div>
           </div>
@@ -48,10 +48,10 @@ export function Footer() {
             <p className="text-[#64748b]">
               Policies coming soon. For questions, email{' '}
               <a
-                href="mailto:dani@fourd.com.au"
+                href="mailto:info@fourd.com.au"
                 className="text-[#3dd68c] hover:text-[#2ab872] transition-colors"
               >
-                dani@fourd.com.au
+                info@fourd.com.au
               </a>
               .
             </p>
@@ -67,7 +67,7 @@ export function Footer() {
             <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 text-[#64748b]">
               <Lock className="w-4 h-4 text-[#3dd68c]" />
-              <span>ISO 27001 Ready</span>
+              <span>ISO 27001 Certified</span>
             </div>
             <div className="flex items-center gap-2 text-[#64748b]">
               <FileCheck className="w-4 h-4 text-[#3dd68c]" />

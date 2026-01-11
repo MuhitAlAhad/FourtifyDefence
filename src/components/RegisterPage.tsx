@@ -1,11 +1,12 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Shield, ArrowLeft, ArrowRight, Building2, User, CreditCard, FileCheck, CheckCircle2 } from 'lucide-react';
 import { Button } from './Button';
 import { Input } from './Input';
 import logoImage from 'figma:asset/35f931b802bf39733103d00f96fb6f9c21293f6e.png';
-import { signup } from '../services/auth';
+import { signup, request } from '../services/auth';
 import { submitQuestionnaire } from '../services/questionnaire';
+import { useSearchParams } from "react-router-dom";
 
 export function RegisterPage() {
   const navigate = useNavigate();
@@ -41,7 +42,61 @@ export function RegisterPage() {
     password: '',
     phone: ''
   });
-  
+  const [searchParams] = useSearchParams();
+  const registrationId = searchParams.get("rid");
+  const [isPrefilling, setIsPrefilling] = useState(false); // Add loading state
+
+  useEffect(() => {
+    
+    if (!registrationId) return;
+
+    const loadExistingQualification = async () => {
+      try {
+
+        setIsPrefilling(true);
+        const qualificationData = await request('/questionnaires/complete-qualification' + `?entityId=${encodeURIComponent(registrationId)}`, {
+          method: 'GET'
+        });
+
+        setFormData(prev => ({
+          ...prev,
+          companyName: qualificationData.companyName,
+          abn: qualificationData.abn,
+          companySize: qualificationData.companySize,
+          industry: qualificationData.industry,
+          contactName: qualificationData.contactName,
+          contactEmail: qualificationData.contactEmail,
+          contactPhone: qualificationData.contactPhone,
+          defenceIndustry: qualificationData.defenceIndustry,
+          dispMember: qualificationData.dispMember,
+          governmentPanels: qualificationData.governmentPanels,
+          nominatedCSO: qualificationData.nominatedCso,
+          nominatedSO: qualificationData.nominatedSo,
+          plan: qualificationData.plan === 'qualification' ? 'professional' : (qualificationData.plan ?? prev.plan)
+        }));
+
+        setAbn(qualificationData.abn ?? "");
+        setCsoNotSure(qualificationData.csoNotSure ?? false);
+        setSoNotSure(qualificationData.soNotSure ?? false);
+        // Jump directly to step 4
+        setStep(4);
+      } catch (err) {
+        setApiError("Unable to load your previous questionnaires. Please try again.");
+        setStep(5);
+      } finally {
+        setIsPrefilling(false);
+      }
+    };
+    
+    loadExistingQualification();
+  }, [registrationId]);
+
+  // useEffect(() => {
+  //   if (registrationId && step < 4) {
+  //     setStep(4);
+  //   }
+  // }, [step, registrationId]);
+
   // ABN lookup removed until banking integration is available.
   
   const validateCurrentStep = () => {
@@ -90,6 +145,7 @@ export function RegisterPage() {
   };
   
   const handleBack = () => {
+    //if (registrationId && step <= 4) return;
     if (step > 1) setStep(step - 1);
   };
   
@@ -124,6 +180,7 @@ export function RegisterPage() {
 
     try {
       const questionnairePayload = {
+        id: registrationId? registrationId : "",
         companyName: formData.companyName,
         abn: formData.abn,
         companySize: formData.companySize,
@@ -170,6 +227,14 @@ export function RegisterPage() {
   const updateFormData = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value });
   };
+
+  if (isPrefilling) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#1a1d23]">
+        <div className="text-[#94a3b8]">Loading your qualification questionnaire…</div>
+      </div>
+    );
+  }
 
   if (showThankYou) {
     return (
