@@ -22,10 +22,13 @@ export function PaymentPage() {
     setShowConfirmation(true);
     
     // Simulate payment processing
-    setTimeout(() => {
+    if(false){ // disabled for time being
+      setTimeout(() => {
       localStorage.setItem('hasActiveSubscription', 'true');
       navigate('/dashboard');
     }, 3000);
+    }
+    
   };
 
   if (showConfirmation) {
@@ -38,7 +41,7 @@ export function PaymentPage() {
           
           <h3 className="text-[#e2e8f0] mb-4">Payment Processing</h3>
           <p className="text-[#94a3b8] mb-6">
-            Your payment is being processed securely. You'll be redirected to your dashboard shortly.
+            Thank you for your enthusiasm in Fourtify. We are currently awaiting changes to our NAB e-commerce secure payment link. A member of Fourtify Defence will be in contact with you soon to progress your licensing.
           </p>
           
           <div className="flex items-center justify-center gap-2 text-[#94a3b8]">
@@ -354,7 +357,7 @@ export function PaymentPage() {
                         </label>
                       </div>
                       
-                      <Button variant="primary" size="lg" className="w-full">
+                      <Button type="submit" variant="primary" size="lg" className="w-full">
                         {paymentMethod === 'invoice' ? 'Request Invoice' : 'Complete Payment'}
                       </Button>
                       

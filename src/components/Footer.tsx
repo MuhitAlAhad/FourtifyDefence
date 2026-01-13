@@ -39,6 +39,8 @@ export function Footer() {
             <ul className="space-y-3">
               <li><Link to="/about" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">About Us</Link></li>
               <li><Link to="/contact" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Contact</Link></li>
+              <li><Link to="/privacy_policy" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/refund_cancellation_exchange_policy" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Refund, Cancellation & Exchange Policy</Link></li>
             </ul>
           </div>
 
@@ -67,7 +69,7 @@ export function Footer() {
             <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 text-[#64748b]">
               <Lock className="w-4 h-4 text-[#3dd68c]" />
-              <span>ISO 27001 Certified</span>
+              <span>ISO 27001 Compliant</span>
             </div>
             <div className="flex items-center gap-2 text-[#64748b]">
               <FileCheck className="w-4 h-4 text-[#3dd68c]" />
