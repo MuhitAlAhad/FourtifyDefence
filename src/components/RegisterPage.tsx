@@ -613,7 +613,7 @@ export function RegisterPage() {
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <h4 className="text-[#e2e8f0]">{plan.name}</h4>
+                            <h4 className="text-[#e2e8f0]">{plan.name === 'SME Custom' ? 'Enterprise Solution' : plan.name}</h4>
                             {plan.recommended && (
                               <span className="px-2 py-1 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny text-xs">
                                 Recommended

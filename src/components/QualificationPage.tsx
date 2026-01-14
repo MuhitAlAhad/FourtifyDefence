@@ -10,8 +10,8 @@ import { submitQualification } from '../services/questionnaire';
 export function QualificationPage() {
   const navigate = useNavigate();
   const [showThankYou, setShowThankYou] = useState(false);
-  const [abn, setAbn] = useState('');
-  const [companyName, setCompanyName] = useState('');
+  const [abn, setAbn] = useState('123456778901');
+  const [companyName, setCompanyName] = useState('default');
   const [csoNotSure, setCsoNotSure] = useState(false);
   const [soNotSure, setSoNotSure] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,11 +19,13 @@ export function QualificationPage() {
   const location = useLocation();
   const selectedQualifyLocation = location.state?.qualifyLocation || 'Default Location';
   const [choice, setChoice] = useState('Standard');
+  const [IsVisibleQuestions, setIsVisibleQuestions] = useState(false);
 
   // ABN lookup removed until integration is available.
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {debugger
     e.preventDefault();
+
     if (isSubmitting) return;
     setError(null);
     setIsSubmitting(true);
@@ -86,6 +88,10 @@ export function QualificationPage() {
   const handleContinue = () => {
     // Navigate to subscribe page after qualification
     navigate('/subscribe');
+  };
+
+  const handleInterestedSignMeUpClick = () => {
+    navigate('/register');
   };
 
   if (showThankYou) {
@@ -165,7 +171,7 @@ export function QualificationPage() {
             
             <div className="bg-[#0f1419] p-8 lg:p-10 clip-corner border border-[#2a2f38]">
               <div className="mb-8">
-                <h2 className="text-[#e2e8f0] mb-2">Qualification Questionnaire</h2>
+                <h2 className="text-[#e2e8f0] mb-2">Contact Us</h2>
                 <p className="text-[#94a3b8]">
                   Please complete this questionnaire to help us understand your organisation's needs and ensure our services are the right fit for you.
                 </p>
@@ -173,6 +179,7 @@ export function QualificationPage() {
               
               <form className="space-y-8" onSubmit={handleSubmit}>
                 {/* ABN and Company Name */}
+                { IsVisibleQuestions ? (
                 <div>
                   <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
                     <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">1</span>
@@ -216,7 +223,7 @@ export function QualificationPage() {
                         className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
                       >
                         <option value="">Select company size</option>
-                        <option value="1-25">1-25 employees</option>
+                        <option value="1-25" selected>1-25 employees</option>
                         <option value="26-100">26-100 employees</option>
                         <option value="101-500">101-500 employees</option>
                         <option value="500+">500+ employees</option>
@@ -231,7 +238,7 @@ export function QualificationPage() {
                         className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
                       >
                         <option value="">Select industry</option>
-                        <option value="aerospace">Aerospace & Aviation</option>
+                        <option value="aerospace" selected>Aerospace & Aviation</option>
                         <option value="maritime">Maritime Defence</option>
                         <option value="land">Land Systems</option>
                         <option value="electronics">Electronics & Communications</option>
@@ -241,6 +248,7 @@ export function QualificationPage() {
                     </div>
                   </div>
                 </div>
+                ) : '' }
                 
                 {/* Point of Contact */}
                 <div>
@@ -367,6 +375,7 @@ export function QualificationPage() {
                 </div>
                 
                 {/* Nominated CSO */}
+                { IsVisibleQuestions ? (
                 <div>
                   <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
                     <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">6</span>
@@ -395,8 +404,10 @@ export function QualificationPage() {
                     </label>
                   </div>
                 </div>
+                ) : '' }
                 
                 {/* Nominated SO */}
+                { IsVisibleQuestions ? (
                 <div>
                   <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
                     <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">7</span>
@@ -425,6 +436,7 @@ export function QualificationPage() {
                     </label>
                   </div>
                 </div>
+                ) : '' }
                 
                 {/* Submit */}
                 <div className="pt-6 border-t border-[#2a2f38]">
@@ -463,15 +475,16 @@ export function QualificationPage() {
                         onClick={() => setChoice('Interested')}
                         disabled={isSubmitting}
                       >
-                        I am very interested, tell me more!
+                        Tell me more links to <span style={{ fontWeight: 'bold', marginLeft:5 }}>Contact Us</span>
                       </Button>
                       
                       <Button 
                         variant="outline" 
                         size="lg" 
                         className="flex-1"
-                        type="submit"
-                        onClick={() => setChoice('InterestedSignMeUp')}
+                        type="button"
+                        onClick={handleInterestedSignMeUpClick}
+                        // onClick={() => setChoice('InterestedSignMeUp')}
                         disabled={isSubmitting}
                       >
                         I know what I want, sign me up!

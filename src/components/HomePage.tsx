@@ -248,7 +248,7 @@ export function HomePage() {
                   name: 'SME Custom',
                   price: 'Custom',
                   period: '',
-                  description: 'Tailored solutions for organisation',
+                  description: 'Tailored solutions for corporations',
                   features: [
                     'Annual Security Review',
                     'Customized user capacity',

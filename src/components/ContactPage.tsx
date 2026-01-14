@@ -166,9 +166,9 @@ export function ContactPage() {
                 </div>
                 
                 <div className="mt-12 p-6 bg-[#2a2f38] clip-corner border border-[#3a3f48]">
-                  <h5 className="text-[#e2e8f0] mb-3">Why Choose SME Custom?</h5>
+                  <h5 className="text-[#e2e8f0] mb-3">Why Choose Enterprise Solution?</h5>
                   <ul className="space-y-2 text-[#94a3b8]">
-                    <li>• Tailored to your organization size</li>
+                    <li>• Tailored solutions for corporations</li>
                     <li>• Flexible module selection</li>
                     <li>• Scalable pricing model</li>
                     <li>• Dedicated implementation support</li>

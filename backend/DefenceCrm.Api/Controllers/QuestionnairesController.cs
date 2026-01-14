@@ -100,23 +100,28 @@ public class QuestionnairesController(
     dbContext.QuestionnaireSubmissions.Add(entity);
     await dbContext.SaveChangesAsync();
 
-    var filePath = Path.Combine(env.ContentRootPath, "workingFine.mp4");
-
-    if (!System.IO.File.Exists(filePath))
-    {
-        return NotFound("Attachment file not found.");
-    }
-
-    var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
-    var base64File = Convert.ToBase64String(fileBytes);
     var attachments = new List<object>();
+    var configFileName = configuration["EmailDemoVideoAttachment:FileName"] ?? "";
+    var configFileNameFormat = configuration["EmailDemoVideoAttachment:VideoFormat"] ?? "";
 
-    attachments.Add(new
-    {
-        filename = Path.GetFileName(filePath),
-        content = base64File,
-        contentType = "video/mp4" // or video/mp4, image/png, etc.
-    });
+    if (!string.IsNullOrEmpty(configFileName) && !string.IsNullOrEmpty(configFileNameFormat)) {
+
+        var filePath = Path.Combine(env.ContentRootPath, configFileName);
+
+        if (System.IO.File.Exists(filePath))
+        {
+            var fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            var base64File = Convert.ToBase64String(fileBytes);
+            
+            attachments.Add(new
+            {
+                filename = Path.GetFileName(filePath),
+                content = base64File,
+                contentType = configFileNameFormat // or video/mp4, image/png, etc.
+            });
+        }
+
+    }
 
     logger.LogInformation("Qualification submitted for {Email} ({Company})", entity.ContactEmail, entity.CompanyName);
 
