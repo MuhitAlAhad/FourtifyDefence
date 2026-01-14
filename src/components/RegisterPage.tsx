@@ -79,7 +79,7 @@ export function RegisterPage() {
         setCsoNotSure(qualificationData.csoNotSure ?? false);
         setSoNotSure(qualificationData.soNotSure ?? false);
         // Jump directly to step 4
-        setStep(4);
+        setStep(1);
       } catch (err) {
         setApiError("Unable to load your previous questionnaires. Please try again.");
         setStep(5);

@@ -478,10 +478,7 @@ export function QualificationPage() {
                       </Button>
                     </div>
                   )}
-
-                  {/* <Button variant="primary" size="lg" className="w-full" type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting...' : 'Submit Qualification'}
-                  </Button> */}
+                  
                   {error && <div className="text-[#ef4444] text-sm mt-3">{error}</div>}
                   <p className="text-center text-sm text-[#94a3b8] mt-4">
                     All fields marked with * are required

@@ -1,5 +1,5 @@
 import { Shield, Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from './Button';
 import { useState } from 'react';
 import logoImage from 'figma:asset/35f931b802bf39733103d00f96fb6f9c21293f6e.png';
@@ -7,8 +7,13 @@ import logoImage from 'figma:asset/35f931b802bf39733103d00f96fb6f9c21293f6e.png'
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const authEnabled = localStorage.getItem('isAuthenticated')? (localStorage.getItem('isAuthenticated') == "true" ? false : true) : true;
+  const locationHeader = useLocation();
 
-  const handleAuthClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  // Helper variables for cleaner JSX
+  const isLoginPage = locationHeader.pathname === '/login';
+  const isRegisterPage = locationHeader.pathname === '/register';
+
+  const handleAuthClick = (event: React.MouseEvent<HTMLAnchorElement>) => {debugger
     if (!authEnabled) {
       event.preventDefault();
     }
@@ -33,10 +38,10 @@ export function Header() {
 
           {/* Auth Buttons */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link to="/login" onClick={handleAuthClick} aria-disabled={!authEnabled}>
+            <Link to="/login" onClick={handleAuthClick} aria-disabled={!authEnabled} className={isLoginPage ? 'pointer-events-none' : ''}>
               <Button variant="secondary" size="sm">Login</Button>
             </Link>
-            <Link to="/register" onClick={handleAuthClick} aria-disabled={!authEnabled}>
+            <Link to="/register" onClick={handleAuthClick} aria-disabled={!authEnabled} className={isRegisterPage ? 'pointer-events-none' : ''}>
               <Button variant="primary" size="sm">Sign Up</Button>
             </Link>
           </div>
@@ -58,10 +63,10 @@ export function Header() {
             <a href="#industries" className="text-[#94a3b8] hover:text-[#3dd68c] transition-colors py-2">Industries</a>
             <a href="#pricing" className="text-[#94a3b8] hover:text-[#3dd68c] transition-colors py-2">Pricing</a>
             <div className="flex flex-col gap-3 mt-4">
-              <Link to="/login" onClick={handleAuthClick} aria-disabled={!authEnabled}>
+              <Link to="/login" onClick={handleAuthClick} aria-disabled={!authEnabled} className={isLoginPage ? 'pointer-events-none' : ''}>
                 <Button variant="secondary" size="sm" className="w-full">Login</Button>
               </Link>
-              <Link to="/register" onClick={handleAuthClick} aria-disabled={!authEnabled}>
+              <Link to="/register" onClick={handleAuthClick} aria-disabled={!authEnabled} className={isRegisterPage ? 'pointer-events-none' : ''}>
                 <Button variant="primary" size="sm" className="w-full">Sign Up</Button>
               </Link>
             </div>
