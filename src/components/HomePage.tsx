@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Shield, Users, Lock, Building2, FileText, BarChart3, CheckCircle2, ArrowRight, ChevronRight, FileCheck, Database } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import bgImage from 'figma:asset/2135485e1d21f7ff57b035a705371c25d20cb5d2.png';
+import VideoModal from './custom/VideoModal';
 
 export function HomePage() {
   return (
@@ -55,11 +56,7 @@ export function HomePage() {
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link to="/qualify" state={{ qualifyLocation: "Watch Demo" }} className="w-full sm:w-auto">
-                    <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                      Watch Demo
-                    </Button>
-                  </Link>
+                  <VideoModal videoUrl="https://www.youtube.com/watch?v=YE7VzlLtp-4"/>
                 </div>
                 
                 <div className="flex items-center gap-6 mt-8 text-sm">
@@ -251,7 +248,7 @@ export function HomePage() {
                   name: 'SME Custom',
                   price: 'Custom',
                   period: '',
-                  description: 'Tailored solutions for small and medium enterprises',
+                  description: 'Tailored solutions for organisation',
                   features: [
                     'Annual Security Review',
                     'Customized user capacity',
@@ -274,7 +271,7 @@ export function HomePage() {
                 >
                   <div className="mb-6">
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-[#e2e8f0]">{plan.name}</h4>
+                      <h4 className="text-[#e2e8f0]">{plan.name === 'SME Custom' ? 'Enterprise Solution' : plan.name}</h4>
                       {plan.highlighted && (
                         <span className="px-3 py-1 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny text-sm">
                           Most Popular
@@ -298,7 +295,39 @@ export function HomePage() {
                   </ul>
                   
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <Link to="/qualify" state={{ qualifyLocation: plan.name }} className="flex-1">
+                    { plan.name === 'SME Custom' ? (
+                      <Link to="/contact" className="flex-2">
+                      <Button 
+                        variant="secondary" 
+                        size="lg"
+                        className="w-full"
+                      >
+                        Contact Us
+                      </Button>
+                    </Link>
+                    ) : (
+                      <>
+                        <Link to="/qualify" state={{ qualifyLocation: plan.name }} className="flex-1">
+                        <Button 
+                          variant={plan.highlighted ? 'primary' : 'outline'} 
+                          size="lg"
+                          className="w-full"
+                        >
+                          {plan.name === 'SME Custom' ? '' : 'Subscribe Now ..'}
+                        </Button>
+                      </Link>
+                      <Link to="/contact" className="flex-1">
+                        <Button 
+                          variant="secondary" 
+                          size="lg"
+                          className="w-full"
+                        >
+                          Contact Us
+                        </Button>
+                      </Link>
+                    </>
+                    )}
+                    {/* <Link to="/qualify" state={{ qualifyLocation: plan.name }} className="flex-1">
                       <Button 
                         variant={plan.highlighted ? 'primary' : 'outline'} 
                         size="lg"
@@ -307,15 +336,15 @@ export function HomePage() {
                         {plan.name === 'SME Custom' ? 'Get Started' : 'Subscribe Now'}
                       </Button>
                     </Link>
-                    <Link to="/qualify" state={{ qualifyLocation: "Get Demo" }} className="flex-1">
+                    <Link to="/contact" className="flex-1">
                       <Button 
                         variant="secondary" 
                         size="lg"
                         className="w-full"
                       >
-                        Get Demo
+                        Contact Us
                       </Button>
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
               ))}
