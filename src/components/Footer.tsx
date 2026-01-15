@@ -47,16 +47,9 @@ export function Footer() {
           {/* Legal */}
           <div>
             <h5 className="text-[#e2e8f0] mb-4">Legal & Compliance</h5>
-            <p className="text-[#64748b]">
-              Policies coming soon. For questions, email{' '}
-              <a
-                href="mailto:info@fourd.com.au"
-                className="text-[#3dd68c] hover:text-[#2ab872] transition-colors"
-              >
-                info@fourd.com.au
-              </a>
-              .
-            </p>
+            <ul className="space-y-3">
+              <li><Link to="/refund_cancellation_exchange_policy" className="text-[#64748b] hover:text-[#3dd68c] transition-colors">Refund, Cancellation & Exchange Policy</Link></li>
+            </ul>
           </div>
         </div>
 
@@ -67,15 +60,15 @@ export function Footer() {
               © 2025 Fourtify Defence. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 text-[#64748b]">
-              <Lock className="w-4 h-4 text-[#3dd68c]" />
-              <span>ISO 27001 Compliant</span>
+              <div className="flex items-center gap-2 text-[#64748b]">
+                <Lock className="w-4 h-4 text-[#3dd68c]" />
+                <span>ISO 27001 Compliant</span>
+              </div>
+              <div className="flex items-center gap-2 text-[#64748b]">
+                <FileCheck className="w-4 h-4 text-[#3dd68c]" />
+                <span>DISP Compliant</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-[#64748b]">
-              <FileCheck className="w-4 h-4 text-[#3dd68c]" />
-              <span>DISP Compliant</span>
-            </div>
-          </div>
           </div>
         </div>
       </div>
