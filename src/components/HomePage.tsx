@@ -11,7 +11,7 @@ export function HomePage() {
   return (
     <div className="min-h-screen bg-[#080d1a] relative">
       {/* Background Image with Overlay */}
-      <div 
+      <div
         className="fixed top-0 left-0 right-0 bottom-0 z-0 w-full h-full"
         style={{
           backgroundImage: `url(${bgImage})`,
@@ -22,15 +22,15 @@ export function HomePage() {
         }}
       ></div>
       <div className="fixed top-0 left-0 right-0 bottom-0 z-[1] bg-gradient-to-b from-[#080d1a]/20 via-transparent to-[#080d1a]/20"></div>
-      
+
       <div className="relative z-10">
         <Header />
-        
+
         {/* Hero Section */}
         <section className="pt-32 pb-20 lg:pt-40 lg:pb-32 px-6 lg:px-12 relative overflow-hidden">
           {/* Diagonal accent with cyan hint */}
           <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-br from-[#3dd68c]/5 via-[#22d3ee]/3 to-transparent transform skew-x-12 translate-x-1/4"></div>
-          
+
           <div className="max-w-[1440px] mx-auto relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
@@ -38,27 +38,27 @@ export function HomePage() {
                   <Shield className="w-4 h-4 text-[#3dd68c]" />
                   <span className="text-[#3dd68c]">DISP Compliance Fast</span>
                 </div>
-                
+
                 <h1 className="text-[#e2e8f0] mb-6 text-3xl lg:text-4xl leading-tight">
                   DISP READY. SOVEREIGN. SECURE.
                 </h1>
-                
+
                 <p className="text-[#94a3b8] mb-4">
                   Australian-owned, security-cleared Fourtify Defence provides sovereign software solutions that automate and simplify Defence Industry Security Program (DISP) compliance. Governance, risk, cyber, people vetting, facilities, documentation, and evidence gathering are automated by our platform. Your company can prioritize capabilities above bureaucracy.
                 </p>
-                
+
                 <p className="text-[#94a3b8] mb-4">
                   Fourtify Defence provides a safe, dependable, and scalable environment for managing sensitive information at Defence-grade responsibilities with an Australian workforce and a commitment to assisting Defence-ready SMEs.
                 </p>
-                
+
                 <p className="text-[#94a3b8] mb-8">
                   Fourtify provides clarity, assurance, and control for DISP membership and Defence contract compliance. <span className="text-[#94a3b8] font-extrabold">TOTAL COMPLIANCE.</span>
                 </p>
-                
+
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <VideoModal videoUrl="https://www.youtube.com/watch?v=YE7VzlLtp-4"/>
+                  <VideoModal videoUrl="https://www.youtube.com/watch?v=YE7VzlLtp-4" />
                 </div>
-                
+
                 <div className="flex items-center gap-6 mt-8 text-sm">
                   <div className="flex items-center gap-2 text-[#94a3b8]">
                     <CheckCircle2 className="w-5 h-5 text-[#3dd68c]" />
@@ -73,7 +73,7 @@ export function HomePage() {
             </div>
           </div>
         </section>
-        
+
         {/* Features Section */}
         <section id="features" className="py-20 px-6 lg:px-12 bg-[#0a0f1a]/95">
           <div className="max-w-[1440px] mx-auto">
@@ -83,7 +83,7 @@ export function HomePage() {
                 Everything you need to achieve and maintain DISP certification for your defence contracts.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 {
@@ -117,7 +117,7 @@ export function HomePage() {
                   description: 'Generate audit-ready reports with one click. Export to PDF or share securely with auditors.'
                 }
               ].map((feature, index) => (
-                <div 
+                <div
                   key={index}
                   className="bg-[#2a2f38] p-6 clip-corner border border-[#3a3f48] hover:border-[#3dd68c]/50 transition-all group"
                 >
@@ -131,7 +131,7 @@ export function HomePage() {
             </div>
           </div>
         </section>
-        
+
         {/* How It Works Section */}
         <section id="how-it-works" className="py-20 px-6 lg:px-12">
           <div className="max-w-[1440px] mx-auto">
@@ -141,7 +141,7 @@ export function HomePage() {
                 Get DISP compliant in four simple steps
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
                 {
@@ -179,7 +179,7 @@ export function HomePage() {
             </div>
           </div>
         </section>
-        
+
         {/* Industries Section */}
         <section id="industries" className="py-20 px-6 lg:px-12 bg-[#0f1419]">
           <div className="max-w-[1440px] mx-auto">
@@ -189,7 +189,7 @@ export function HomePage() {
                 Serving companies across the defence supply chain
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 'Aerospace & Aviation',
@@ -199,7 +199,7 @@ export function HomePage() {
                 'Cybersecurity Services',
                 'Defence Consulting'
               ].map((industry, index) => (
-                <div 
+                <div
                   key={index}
                   className="bg-[#2a2f38] p-6 clip-corner-sm border border-[#3a3f48] hover:border-[#3dd68c] transition-all group cursor-pointer"
                 >
@@ -212,7 +212,7 @@ export function HomePage() {
             </div>
           </div>
         </section>
-        
+
         {/* Pricing Section */}
         <section id="pricing" className="py-20 px-6 lg:px-12">
           <div className="max-w-[1440px] mx-auto">
@@ -222,7 +222,7 @@ export function HomePage() {
                 Choose the plan that fits your organization's size and needs
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {[
                 {
@@ -261,13 +261,12 @@ export function HomePage() {
                   ]
                 }
               ].map((plan, index) => (
-                <div 
+                <div
                   key={index}
-                  className={`bg-[#2a2f38] p-8 clip-corner border relative transition-all duration-300 cursor-pointer ${
-                    plan.highlighted 
-                      ? 'border-[#3dd68c] hover:border-[#3dd68c] hover:shadow-[0_0_30px_rgba(61,214,140,0.2)]' 
-                      : 'border-[#3a3f48] hover:border-[#3dd68c]/60 hover:shadow-[0_0_20px_rgba(61,214,140,0.1)]'
-                  }`}
+                  className={`bg-[#2a2f38] p-8 clip-corner border relative transition-all duration-300 cursor-pointer ${plan.highlighted
+                    ? 'border-[#3dd68c] hover:border-[#3dd68c] hover:shadow-[0_0_30px_rgba(61,214,140,0.2)]'
+                    : 'border-[#3a3f48] hover:border-[#3dd68c]/60 hover:shadow-[0_0_20px_rgba(61,214,140,0.1)]'
+                    }`}
                 >
                   <div className="mb-6">
                     <div className="flex items-center justify-between mb-2">
@@ -284,7 +283,7 @@ export function HomePage() {
                     </div>
                     <p className="text-[#94a3b8]">{plan.description}</p>
                   </div>
-                  
+
                   <ul className="space-y-3 mb-8">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-3">
@@ -293,39 +292,39 @@ export function HomePage() {
                       </li>
                     ))}
                   </ul>
-                  
+
                   <div className="flex flex-col sm:flex-row gap-3">
-                    { plan.name === 'SME Custom' ? (
+                    {plan.name === 'SME Custom' ? (
                       <Link to="/contact" className="flex-2">
-                      <Button 
-                        variant="secondary" 
-                        size="lg"
-                        className="w-full"
-                      >
-                        Contact Us
-                      </Button>
-                    </Link>
-                    ) : (
-                      <>
-                        <Link to="/qualify" state={{ qualifyLocation: plan.name }} className="flex-1">
-                        <Button 
-                          variant={plan.highlighted ? 'primary' : 'outline'} 
-                          size="lg"
-                          className="w-full"
-                        >
-                          {plan.name === 'SME Custom' ? '' : 'Subscribe Now ..'}
-                        </Button>
-                      </Link>
-                      <Link to="/contact" className="flex-1">
-                        <Button 
-                          variant="secondary" 
+                        <Button
+                          variant="secondary"
                           size="lg"
                           className="w-full"
                         >
                           Contact Us
                         </Button>
                       </Link>
-                    </>
+                    ) : (
+                      <>
+                        <Link to="/register" className="flex-1">
+                          <Button
+                            variant={plan.highlighted ? 'primary' : 'outline'}
+                            size="lg"
+                            className="w-full"
+                          >
+                            {plan.name === 'SME Custom' ? '' : 'Subscribe Now ..'}
+                          </Button>
+                        </Link>
+                        <Link to="/qualify" className="flex-1">
+                          <Button
+                            variant="secondary"
+                            size="lg"
+                            className="w-full"
+                          >
+                            Contact Us
+                          </Button>
+                        </Link>
+                      </>
                     )}
                     {/* <Link to="/qualify" state={{ qualifyLocation: plan.name }} className="flex-1">
                       <Button 
@@ -351,7 +350,7 @@ export function HomePage() {
             </div>
           </div>
         </section>
-        
+
         {/* Security Trust Section */}
         <section className="py-20 px-6 lg:px-12">
           <div className="max-w-[1440px] mx-auto">
@@ -361,7 +360,7 @@ export function HomePage() {
                 Your data is protected by military-grade security standards
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
@@ -394,9 +393,9 @@ export function HomePage() {
                 </div>
               ))}
             </div>
-            
+
             <div className="mt-12 text-center">
-              <ImageWithFallback 
+              <ImageWithFallback
                 src="https://images.unsplash.com/photo-1667372283496-893f0b1e7c16?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzZWN1cmUlMjBkYXRhJTIwY2VudGVyfGVufDF8fHx8MTc2NDUxODM1M3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
                 alt="Secure data center"
                 className="w-full max-w-4xl mx-auto rounded-lg opacity-50"
@@ -404,7 +403,7 @@ export function HomePage() {
             </div>
           </div>
         </section>
-        
+
         <Footer />
       </div>
     </div>
