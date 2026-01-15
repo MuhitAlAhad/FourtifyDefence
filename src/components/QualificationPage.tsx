@@ -1,7 +1,7 @@
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { Button } from './Button';
-import { Link, useNavigate, useLocation  } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import bgImage from 'figma:asset/2135485e1d21f7ff57b035a705371c25d20cb5d2.png';
@@ -23,7 +23,8 @@ export function QualificationPage() {
 
   // ABN lookup removed until integration is available.
 
-  const handleSubmit = async (e: React.FormEvent) => {debugger
+  const handleSubmit = async (e: React.FormEvent) => {
+    debugger
     e.preventDefault();
 
     if (isSubmitting) return;
@@ -50,7 +51,7 @@ export function QualificationPage() {
     };
 
     try {
-      const submitData:any = await submitQualification({
+      const submitData: any = await submitQualification({
         abn: String(qualificationData.abn ?? ''),
         companyName: String(qualificationData.companyName ?? ''),
         companySize: String(qualificationData.companySize ?? ''),
@@ -74,9 +75,9 @@ export function QualificationPage() {
         window.location.href = submitData.paymentUrl;
         return; // Ensure nothing else runs after redirect
       }
-      
+
       setShowThankYou(true);
-      
+
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Could not submit your enquiry. Please try again.';
       setError(message);
@@ -98,7 +99,7 @@ export function QualificationPage() {
     return (
       <div className="min-h-screen bg-[#080d1a] relative">
         {/* Background Image with Overlay */}
-        <div 
+        <div
           className="fixed top-0 left-0 right-0 bottom-0 z-0 w-full h-full"
           style={{
             backgroundImage: `url(${bgImage})`,
@@ -109,23 +110,23 @@ export function QualificationPage() {
           }}
         ></div>
         <div className="fixed top-0 left-0 right-0 bottom-0 z-[1] bg-gradient-to-b from-[#080d1a]/20 via-transparent to-[#080d1a]/20"></div>
-        
+
         <div className="relative z-10">
           <Header />
-          
+
           <div className="pt-32 pb-20 px-6 lg:px-12">
             <div className="max-w-[800px] mx-auto">
               <div className="bg-[#0f1419] p-8 lg:p-12 clip-corner border border-[#3dd68c] text-center">
                 <div className="w-20 h-20 bg-[#3dd68c]/10 clip-corner mx-auto mb-6 flex items-center justify-center">
                   <CheckCircle2 className="w-10 h-10 text-[#3dd68c]" />
                 </div>
-                
+
                 <h2 className="text-[#e2e8f0] mb-4">Thank You for Your Enquiry</h2>
-                
+
                 <p className="text-[#94a3b8] text-lg mb-8 max-w-[600px] mx-auto">
                   Thank you. Someone will be in touch shortly.
                 </p>
-                
+
                 <div className="flex justify-center">
                   <Link to="/">
                     <Button variant="primary" size="lg">
@@ -136,7 +137,7 @@ export function QualificationPage() {
               </div>
             </div>
           </div>
-          
+
           <Footer />
         </div>
       </div>
@@ -146,7 +147,7 @@ export function QualificationPage() {
   return (
     <div className="min-h-screen bg-[#080d1a] relative">
       {/* Background Image with Overlay */}
-      <div 
+      <div
         className="fixed top-0 left-0 right-0 bottom-0 z-0 w-full h-full"
         style={{
           backgroundImage: `url(${bgImage})`,
@@ -157,10 +158,10 @@ export function QualificationPage() {
         }}
       ></div>
       <div className="fixed top-0 left-0 right-0 bottom-0 z-[1] bg-gradient-to-b from-[#080d1a]/20 via-transparent to-[#080d1a]/20"></div>
-      
+
       <div className="relative z-10">
         <Header />
-        
+
         <div className="pt-32 pb-20 px-6 lg:px-12">
           <div className="max-w-[900px] mx-auto">
             {/* Back Button */}
@@ -168,7 +169,7 @@ export function QualificationPage() {
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Home</span>
             </Link>
-            
+
             <div className="bg-[#0f1419] p-8 lg:p-10 clip-corner border border-[#2a2f38]">
               <div className="mb-8">
                 <h2 className="text-[#e2e8f0] mb-2">Contact Us</h2>
@@ -176,87 +177,87 @@ export function QualificationPage() {
                   Please complete this questionnaire to help us understand your organisation's needs and ensure our services are the right fit for you.
                 </p>
               </div>
-              
+
               <form className="space-y-8" onSubmit={handleSubmit}>
                 {/* ABN and Company Name */}
-                { IsVisibleQuestions ? (
-                <div>
-                  <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">1</span>
-                    Company Information
-                  </h5>
-                  
-                  <div className="space-y-4 pl-10">
-                    <div>
-                      <label className="block text-[#e2e8f0] mb-2">Australian Business Number (ABN) *</label>
-                      <input
-                        type="text"
-                        value={abn}
-                        onChange={(e) => {
-                          const value = e.target.value.replace(/\D/g, '').slice(0, 11);
-                          setAbn(value);
-                        }}
-                        className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
-                        placeholder="Enter 11-digit ABN"
-                        required
-                      />
-                      <p className="text-sm text-[#94a3b8] mt-1">Format: 12345678901 (11 digits)</p>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-[#e2e8f0] mb-2">Company Name *</label>
-                      <input
-                        type="text"
-                        value={companyName}
-                        onChange={(e) => setCompanyName(e.target.value)}
-                        className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
-                        placeholder="Auto-filled from ABN lookup or enter manually"
-                        required
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="block text-[#e2e8f0] mb-2">Company Size *</label>
-                      <select
-                        name="companySize"
-                        required
-                        className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
-                      >
-                        <option value="">Select company size</option>
-                        <option value="1-25" selected>1-25 employees</option>
-                        <option value="26-100">26-100 employees</option>
-                        <option value="101-500">101-500 employees</option>
-                        <option value="500+">500+ employees</option>
-                      </select>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-[#e2e8f0] mb-2">Industry Sector *</label>
-                      <select
-                        name="industry"
-                        required
-                        className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
-                      >
-                        <option value="">Select industry</option>
-                        <option value="aerospace" selected>Aerospace & Aviation</option>
-                        <option value="maritime">Maritime Defence</option>
-                        <option value="land">Land Systems</option>
-                        <option value="electronics">Electronics & Communications</option>
-                        <option value="cyber">Cybersecurity Services</option>
-                        <option value="consulting">Defence Consulting</option>
-                      </select>
+                {IsVisibleQuestions ? (
+                  <div>
+                    <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
+                      <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">1</span>
+                      Company Information
+                    </h5>
+
+                    <div className="space-y-4 pl-10">
+                      <div>
+                        <label className="block text-[#e2e8f0] mb-2">Australian Business Number (ABN) *</label>
+                        <input
+                          type="text"
+                          value={abn}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, '').slice(0, 11);
+                            setAbn(value);
+                          }}
+                          className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
+                          placeholder="Enter 11-digit ABN"
+                          required
+                        />
+                        <p className="text-sm text-[#94a3b8] mt-1">Format: 12345678901 (11 digits)</p>
+                      </div>
+
+                      <div>
+                        <label className="block text-[#e2e8f0] mb-2">Company Name *</label>
+                        <input
+                          type="text"
+                          value={companyName}
+                          onChange={(e) => setCompanyName(e.target.value)}
+                          className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
+                          placeholder="Auto-filled from ABN lookup or enter manually"
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[#e2e8f0] mb-2">Company Size *</label>
+                        <select
+                          name="companySize"
+                          required
+                          className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
+                        >
+                          <option value="">Select company size</option>
+                          <option value="1-25" selected>1-25 employees</option>
+                          <option value="26-100">26-100 employees</option>
+                          <option value="101-500">101-500 employees</option>
+                          <option value="500+">500+ employees</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-[#e2e8f0] mb-2">Industry Sector *</label>
+                        <select
+                          name="industry"
+                          required
+                          className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors"
+                        >
+                          <option value="">Select industry</option>
+                          <option value="aerospace" selected>Aerospace & Aviation</option>
+                          <option value="maritime">Maritime Defence</option>
+                          <option value="land">Land Systems</option>
+                          <option value="electronics">Electronics & Communications</option>
+                          <option value="cyber">Cybersecurity Services</option>
+                          <option value="consulting">Defence Consulting</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
-                </div>
-                ) : '' }
-                
+                ) : ''}
+
                 {/* Point of Contact */}
                 <div>
                   <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">2</span>
+                    <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">{IsVisibleQuestions ? 2 : 1}</span>
                     Point of Contact
                   </h5>
-                  
+
                   <div className="space-y-4 pl-10">
                     <div>
                       <label className="block text-[#e2e8f0] mb-2">Full Name *</label>
@@ -268,7 +269,7 @@ export function QualificationPage() {
                         required
                       />
                     </div>
-                    
+
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-[#e2e8f0] mb-2">Email *</label>
@@ -293,14 +294,14 @@ export function QualificationPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Defence Industry Involvement */}
                 <div>
                   <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">3</span>
+                    <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">{IsVisibleQuestions ? 3 : 2}</span>
                     Defence Industry Involvement
                   </h5>
-                  
+
                   <div className="pl-10">
                     <label className="block text-[#e2e8f0] mb-2">
                       Describe your organisation's involvement in the Defence Industry *
@@ -317,14 +318,14 @@ export function QualificationPage() {
                     </p>
                   </div>
                 </div>
-                
+
                 {/* DISP Membership */}
                 <div>
                   <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">4</span>
+                    <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">{IsVisibleQuestions ? 4 : 3}</span>
                     DISP Membership Status
                   </h5>
-                  
+
                   <div className="pl-10">
                     <label className="block text-[#e2e8f0] mb-3">
                       Are you currently a DISP member? *
@@ -353,14 +354,14 @@ export function QualificationPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Government Panels */}
                 <div>
                   <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">5</span>
+                    <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">{IsVisibleQuestions ? 5 : 4}</span>
                     Government Panel Membership
                   </h5>
-                  
+
                   <div className="pl-10">
                     <label className="block text-[#e2e8f0] mb-2">
                       Are you on any government panels?
@@ -373,71 +374,71 @@ export function QualificationPage() {
                     ></textarea>
                   </div>
                 </div>
-                
+
                 {/* Nominated CSO */}
-                { IsVisibleQuestions ? (
-                <div>
-                  <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">6</span>
-                    Nominated Chief Security Officer (CSO)
-                  </h5>
-                  
-                  <div className="space-y-3 pl-10">
-                    <div>
-                      <label className="block text-[#e2e8f0] mb-2">Name of nominated CSO</label>
-                      <input
-                        type="text"
-                        name="nominatedCSO"
-                        disabled={csoNotSure}
-                        className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        placeholder="Full name of CSO"
-                      />
+                {IsVisibleQuestions ? (
+                  <div>
+                    <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
+                      <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">6</span>
+                      Nominated Chief Security Officer (CSO)
+                    </h5>
+
+                    <div className="space-y-3 pl-10">
+                      <div>
+                        <label className="block text-[#e2e8f0] mb-2">Name of nominated CSO</label>
+                        <input
+                          type="text"
+                          name="nominatedCSO"
+                          disabled={csoNotSure}
+                          className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          placeholder="Full name of CSO"
+                        />
+                      </div>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={csoNotSure}
+                          onChange={(e) => setCsoNotSure(e.target.checked)}
+                          className="w-4 h-4 accent-[#3dd68c]"
+                        />
+                        <span className="text-[#94a3b8]">Not sure / Not yet appointed</span>
+                      </label>
                     </div>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={csoNotSure}
-                        onChange={(e) => setCsoNotSure(e.target.checked)}
-                        className="w-4 h-4 accent-[#3dd68c]"
-                      />
-                      <span className="text-[#94a3b8]">Not sure / Not yet appointed</span>
-                    </label>
                   </div>
-                </div>
-                ) : '' }
-                
+                ) : ''}
+
                 {/* Nominated SO */}
-                { IsVisibleQuestions ? (
-                <div>
-                  <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">7</span>
-                    Nominated Security Officer (SO)
-                  </h5>
-                  
-                  <div className="space-y-3 pl-10">
-                    <div>
-                      <label className="block text-[#e2e8f0] mb-2">Name of nominated SO</label>
-                      <input
-                        type="text"
-                        name="nominatedSO"
-                        disabled={soNotSure}
-                        className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        placeholder="Full name of SO"
-                      />
+                {IsVisibleQuestions ? (
+                  <div>
+                    <h5 className="text-[#e2e8f0] mb-4 flex items-center gap-2">
+                      <span className="w-8 h-8 bg-[#3dd68c] text-[#0f1419] clip-corner-tiny flex items-center justify-center">7</span>
+                      Nominated Security Officer (SO)
+                    </h5>
+
+                    <div className="space-y-3 pl-10">
+                      <div>
+                        <label className="block text-[#e2e8f0] mb-2">Name of nominated SO</label>
+                        <input
+                          type="text"
+                          name="nominatedSO"
+                          disabled={soNotSure}
+                          className="w-full px-4 py-3 bg-[#1a1f2e] border border-[#2a2f38] text-[#e2e8f0] clip-corner-sm focus:outline-none focus:border-[#3dd68c] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          placeholder="Full name of SO"
+                        />
+                      </div>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={soNotSure}
+                          onChange={(e) => setSoNotSure(e.target.checked)}
+                          className="w-4 h-4 accent-[#3dd68c]"
+                        />
+                        <span className="text-[#94a3b8]">Not sure / Not yet appointed</span>
+                      </label>
                     </div>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={soNotSure}
-                        onChange={(e) => setSoNotSure(e.target.checked)}
-                        className="w-4 h-4 accent-[#3dd68c]"
-                      />
-                      <span className="text-[#94a3b8]">Not sure / Not yet appointed</span>
-                    </label>
                   </div>
-                </div>
-                ) : '' }
-                
+                ) : ''}
+
                 {/* Submit */}
                 <div className="pt-6 border-t border-[#2a2f38]">
                   <div className="flex items-start gap-3 mb-6">
@@ -451,14 +452,14 @@ export function QualificationPage() {
                       I consent to Fourtify Defence processing this information and contacting me regarding my enquiry. I understand my data will be handled in accordance with their Privacy Policy.
                     </label>
                   </div>
-                  
+
                   {selectedQualifyLocation !== 'Fourtify Professional' ? (
                     // Standard Submit
-                    <Button 
-                      variant="primary" 
-                      size="lg" 
-                      className="w-full" 
-                      onClick={() => setChoice('Standard')} 
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      className="w-full"
+                      onClick={() => setChoice('Standard')}
                       type="submit" // Standard submit triggers form onSubmit
                       disabled={isSubmitting}
                     >
@@ -467,20 +468,20 @@ export function QualificationPage() {
                   ) : (
                     // Dual Choice - both call the same logic but pass different labels
                     <div className="flex gap-4 w-full">
-                      <Button 
-                        variant="primary" 
-                        size="lg" 
+                      <Button
+                        variant="primary"
+                        size="lg"
                         className="flex-1"
-                        type="submit" 
+                        type="submit"
                         onClick={() => setChoice('Interested')}
                         disabled={isSubmitting}
                       >
-                        Tell me more links to <span style={{ fontWeight: 'bold', marginLeft:5 }}>Contact Us</span>
+                        Tell me more links to <span style={{ fontWeight: 'bold', marginLeft: 5 }}>Contact Us</span>
                       </Button>
-                      
-                      <Button 
-                        variant="outline" 
-                        size="lg" 
+
+                      <Button
+                        variant="outline"
+                        size="lg"
                         className="flex-1"
                         type="button"
                         onClick={handleInterestedSignMeUpClick}
@@ -491,7 +492,7 @@ export function QualificationPage() {
                       </Button>
                     </div>
                   )}
-                  
+
                   {error && <div className="text-[#ef4444] text-sm mt-3">{error}</div>}
                   <p className="text-center text-sm text-[#94a3b8] mt-4">
                     All fields marked with * are required
@@ -501,7 +502,7 @@ export function QualificationPage() {
             </div>
           </div>
         </div>
-        
+
         <Footer />
       </div>
     </div>
